@@ -1,0 +1,68 @@
+MDScreen:
+    name: "Company_Notification"
+    MDFloatLayout:
+
+
+        MDTopAppBar:
+            md_bg_color: rgba(95, 176, 179, 255)
+            pos_hint: {"center_x":0.5,"center_y":0.95}
+        MDLabel:
+            text: "Applied Students"
+            font_name: "DPoppins"
+            font_size: "22dp"
+            pos_hint: {"center_x":0.72,"center_y":0.95}
+            theme_text_color: "Custom"
+            text_color: rgba(255,255,255,255)
+        MDIconButton:
+            icon : "chevron-left"
+            pos_hint : {"center_y" :0.95}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color : rgba(255,255,255,255)
+            on_release:
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'companyhome'
+        MDIconButton:
+            icon: "home"
+            pos_hint: {"center_x":0.15,"center_y":0.05}
+            theme_icon_color : "Custom"
+            icon_color: rgba(255, 255, 255, 255)
+            on_press:
+                root.manager.current = 'companyhome'
+                root.manager.transition.direction = "left"
+        MDIconButton:
+            icon: "bell"
+            pos_hint: {"center_x":0.4,"center_y":0.05}
+            theme_icon_color : "Custom"
+            icon_color: rgba(255, 255, 255, 255)
+            on_press:
+                app.on_click_showcompanylist()
+                root.manager.current = 'Company_Notification'
+                root.manager.transition.direction = "left"
+        MDIconButton:
+            icon: "plus"
+            pos_hint: {"center_x":0.65,"center_y":0.05}
+            theme_icon_color : "Custom"
+            icon_color: rgba(255, 255, 255, 255)
+            on_press:
+                root.manager.current = 'addjob'
+                root.manager.transition.direction = "left"
+        MDIconButton:
+            icon: "account"
+            pos_hint: {"center_x":0.852,"center_y":0.05}
+            theme_icon_color : "Custom"
+            icon_color: rgba(255, 255, 255, 255)
+            on_release:
+                app.display_data2()
+                root.manager.current = 'companyprofile'
+                root.manager.transition.direction = "left"
+    MDBoxLayout:
+        orientation: "vertical"
+        pos_hint: {"center_y":0.52}
+        size_hint_y:0.75
+        ScrollView:
+
+            bar_color: [0, 0, 255, 1]
+            bar_width: 2
+            MDList:
+                id: company_notification_list

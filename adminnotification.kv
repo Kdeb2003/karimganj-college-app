@@ -1,0 +1,25 @@
+#:import Snackbar kivymd.uix.snackbar.Snackbar
+#:import colors kivymd.color_definitions
+MDScreen:
+    name: "adminnotification"
+    MDFloatLayout:
+
+
+        MDTopAppBar:
+            title: '           Notifications'
+            specific_text_color: 1, 1, 1, 1
+            pos_hint: { "center_x":0.5,"center_y":0.95}
+        MDIconButton:
+            icon: "chevron-left"
+            pos_hint: {"center_x":0.05,"center_y":0.94}
+            user_font_size: "20sp"
+            theme_text_color: "Custom"
+            text_color: rgba(255,255,255,255)
+            on_release:
+                root.manager.current = "adminhome"
+        MDBoxLayout:
+            orientation: 'vertical'
+            pos_hint: { "center_x":0.5,"center_y":0.4}
+            ScrollView:
+                MDList:
+                    id: noticefrompotoadmin

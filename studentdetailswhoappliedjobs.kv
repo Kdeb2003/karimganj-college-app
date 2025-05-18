@@ -1,0 +1,205 @@
+MDScreen:
+    name: "studentdetailsthathaveappliedjobs"
+
+    MDFloatLayout:
+        md_bg_color: rgba(245, 245, 245, 255)
+
+        MDTopAppBar:
+            md_bg_color: rgba(95, 176, 179, 255)
+            pos_hint: {"top": 1}
+            elevation: 2
+
+        MDLabel:
+            text: "Student Details"
+            font_name: "DPoppins"
+            font_size: "22sp"
+            pos_hint: {"center_x": 0.75, "center_y": 0.94}
+            theme_text_color: "Custom"
+            text_color: rgba(222, 254, 237, 255)
+
+        MDIconButton:
+            icon: "chevron-left"
+            pos_hint: {"center_y": 0.94, "x": 0.02}
+            user_font_size: "30sp"
+            icon_size: "30sp"
+            theme_text_color: "Custom"
+            text_color: rgba(222, 254, 237, 255)
+            on_release:
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'companyseesstudentapplication'
+
+
+        ScrollView:
+            pos_hint: {"center_x": 0.5, "center_y": 0.35}
+            size_hint: 1, 0.6
+
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                padding: dp(20)
+                spacing: dp(15)
+
+                MDCard:
+                    orientation: "vertical"
+                    size_hint: None, None
+                    size: "280dp", "60dp"
+                    elevation: 2
+                    padding: dp(15)
+                    MDLabel:
+                        text: "Student ID"
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Secondary"
+                    MDLabel:
+                        id: user_id
+                        text: " "
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Primary"
+
+                MDCard:
+                    orientation: "vertical"
+                    size_hint: None, None
+                    size: "280dp", "60dp"
+                    elevation: 2
+                    padding: dp(15)
+                    MDLabel:
+                        text: "Name"
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Secondary"
+                    MDLabel:
+                        id: full_name
+                        text: " "
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Primary"
+
+                MDCard:
+                    orientation: "vertical"
+                    size_hint: None, None
+                    size: "280dp", "60dp"
+                    elevation: 2
+                    padding: dp(15)
+                    MDLabel:
+                        text: "Email ID"
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Secondary"
+                    MDLabel:
+                        id: email_id
+                        text: " "
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Primary"
+
+                MDCard:
+                    orientation: "vertical"
+                    size_hint: None, None
+                    size: "280dp", "60dp"
+                    elevation: 2
+                    padding: dp(15)
+                    MDLabel:
+                        text: "Phone Number"
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Secondary"
+                    MDLabel:
+                        id: phone_no
+                        text: " "
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Primary"
+
+                MDCard:
+                    orientation: "vertical"
+                    size_hint: None, None
+                    size: "280dp", "60dp"
+                    elevation: 2
+                    padding: dp(15)
+                    MDLabel:
+                        text: "Address"
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Secondary"
+                    MDLabel:
+                        id: address
+                        text: " "
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Primary"
+
+                MDCard:
+                    orientation: "vertical"
+                    size_hint: None, None
+                    size: "280dp", "60dp"
+                    elevation: 2
+                    padding: dp(15)
+                    MDLabel:
+                        text: "Department"
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Secondary"
+                    MDLabel:
+                        id: department
+                        text: " "
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Primary"
+
+                BoxLayout:
+                    orientation: "horizontal"
+                    spacing: dp(20)
+                    padding: [0, dp(20), 0, 0]
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                    MDRaisedButton:
+                        text: "[b]Reject[/b]"
+                        markup: True
+                        md_bg_color: rgba(255, 65, 52, 255)
+                        pos_hint: {"center_x": 0.5}
+                        size_hint_x: 0.4
+                        elevation: 0
+                        on_release:
+                            app.reject()
+                            root.manager.current = "studentdetailsthathaveappliedjobs"
+
+                    MDRaisedButton:
+                        text: "[b]Shortlist[/b]"
+                        markup: True
+                        md_bg_color: rgba(233, 231, 1, 255)
+                        pos_hint: {"center_x": 0.5}
+                        size_hint_x: 0.4
+                        elevation: 0
+                        on_release:
+                            app.shortlist()
+                            root.manager.current = "studentdetailsthathaveappliedjobs"
+
+        FloatLayout:
+            size_hint: None, None
+            size: dp(110), dp(110)
+            pos_hint: {"center_x": 0.5, "center_y": 0.75}
+            canvas.before:
+                Color:
+                    rgba: rgba(102, 102, 102, 255) # Reset color to white for main image background
+                Ellipse:
+                    size: [dp(110), dp(110)]  # Size for the main image background
+                    pos: [self.pos[0], self.pos[1]]  # Position for the main image background
+                StencilPush
+                Ellipse:
+                    size: [dp(110), dp(110)]  # Size for the stencil
+                    pos: [self.pos[0], self.pos[1]]  # Position for the stencil
+                StencilUse
+            canvas.after:
+                StencilUnUse
+                StencilPop
+            Image:
+                id: showstudentimagetocompany
+                source: "profileplaceholder1.jpg"
+                size_hint: None, None
+                size: dp(110), dp(110)
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                allow_stretch: True
+                keep_ratio: False

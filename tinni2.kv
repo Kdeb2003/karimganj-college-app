@@ -1,0 +1,347 @@
+#:import STANDARD_INCREMENT kivymd.material_resources.STANDARD_INCREMENT
+#:import Animation kivy.animation.Animation
+<Spacer@Widget>
+    size_hint_y: None
+    height: "12dp"
+
+
+<CardItem@RelativeLayout>
+    size_hint_y:None
+    height:'150dp'
+    radius:[50]
+    elevation: 0
+    MDCard:
+        Widget:
+            size_hint_x: 0.8
+
+        MDBoxLayout:
+            orientation: "vertical"
+            id: box
+            padding: 0,0,"48dp","12dp"
+            MDLabel:
+                text: "Hi User"
+                bold: True
+                font_style: "H6"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.5}
+            Spacer:
+            MDLabel:
+                text: "Know about us"
+                font_style: "Caption"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.6}
+            Spacer:
+
+            MDFlatButton:
+                elevation: 0
+                text:"Click Me"
+                -width: box.width
+                -height: "48dp"
+                md_bg_color: rgba(95, 176, 179, 255)
+                on_release: Animation(x=0, d=0.8, t="out_back").start(box_info)
+
+
+    MDRelativeLayout:
+        radius: [0,15,15,0]
+        id: box_info
+        size_hint_y: None
+        height: root.height -dp(24)
+        md_bg_color: rgba(95, 176, 179, 255)
+        x: STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT
+        y: dp(12)
+        on_touch_down:
+            Animation(x=STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT, d=0.8, t="in_back").start(box_info)
+        Image:
+            source: "akdmnewkclogo.png"
+            size_hint_x: None
+            width: STANDARD_INCREMENT * 2.5
+            x: root.width - self.width + STANDARD_INCREMENT
+        MDLabel:
+            text: "Karimganj College"
+            font_style: "H6"
+            adaptive_height: True
+            bold:True
+            #x: "12dp"
+            #y:"4dp"
+            pos_hint:{"center_x":0.7,"center_y":0.7}
+        MDLabel:
+            text: "ESTD: 1946 "
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.5}
+        MDLabel:
+            text: "Location: Karimganj "
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.3}
+        MDIconButton:
+            icon: "arrow-right-circle-outline"
+            #badge_icon: "numeric-10"
+            pos_hint: {"center_x": 0.6, "center_y":0.12}
+            on_release:
+                import webbrowser
+                webbrowser.open('http://www.karimganjcollege.ac.in/')
+
+        MDLabel:
+            text: "Click to know more "
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.12}
+
+<CardItem1@RelativeLayout>
+    size_hint_y:None
+    height:'150dp'
+    radius:[50]
+    elevation: 0
+    MDCard:
+        Widget:
+            size_hint_x: 0.8
+
+        MDBoxLayout:
+            orientation: "vertical"
+            id: box1
+            padding: 0,0,"48dp","12dp"
+            MDLabel:
+                text: "Job"
+                bold: True
+                font_style: "H6"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.5}
+            Spacer:
+            MDLabel:
+                text: "Know more"
+                font_style: "Caption"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.6}
+            Spacer:
+
+            MDFlatButton:
+                elevation: 0
+                text:"Click Me"
+                -width: box1.width
+                -height: "48dp"
+                md_bg_color: rgba(95, 176, 179, 255)
+                on_release: Animation(x=0, d=0.8, t="out_back").start(box1_info)
+
+
+    MDRelativeLayout:
+        radius: [0,15,15,0]
+        id: box1_info
+        size_hint_y: None
+        height: root.height -dp(24)
+        md_bg_color: rgba(95, 176, 179, 255)
+        x: STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT
+        y: dp(12)
+        on_touch_down:
+            Animation(x=STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT, d=0.8, t="in_back").start(box1_info)
+        Image:
+            source: "notun.png"
+            size_hint_x: None
+            width: STANDARD_INCREMENT * 2.5
+            x: root.width - self.width + STANDARD_INCREMENT
+        MDLabel:
+            text: "New Job Arrivals"
+            font_style: "H6"
+            adaptive_height: True
+            bold:True
+            #x: "12dp"
+            #y:"4dp"
+            pos_hint:{"center_x":0.7,"center_y":0.7}
+        MDLabel:
+            text: " \n \n Jobs related to \n your selected fields"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.5}
+        MDIconButton:
+            icon: "arrow-right-circle-outline"
+            #badge_icon: "numeric-10"
+            pos_hint: {"center_x": 0.6, "center_y":0.12}
+            on_release:
+                app.change_screen("job")
+                app.on_click_showlist()
+        MDLabel:
+            text: "Click to know more "
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.12}
+<CardItem2@RelativeLayout>
+    size_hint_y:None
+    height:'150dp'
+    radius:[50]
+    elevation: 0
+    MDCard:
+        Widget:
+            size_hint_x: 0.8
+
+        MDBoxLayout:
+            orientation: "vertical"
+            id: box2
+            padding: 0,0,"48dp","12dp"
+            MDLabel:
+                text: "Applied Jobs"
+                bold: True
+                font_style: "H6"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.5}
+            Spacer:
+            MDLabel:
+                text: "Keep Track"
+                font_style: "Caption"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.6}
+            Spacer:
+
+            MDFlatButton:
+                elevation: 0
+                text:"Click Me"
+                -width: box2.width
+                -height: "48dp"
+                md_bg_color: rgba(95, 176, 179, 255)
+                on_release: Animation(x=0, d=0.8, t="out_back").start(box2_info)
+
+
+    MDRelativeLayout:
+        radius: [0,15,15,0]
+        id: box2_info
+        size_hint_y: None
+        height: root.height -dp(24)
+        md_bg_color: rgba(95, 176, 179, 255)
+        x: STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT
+        y: dp(12)
+        on_touch_down:
+            Animation(x=STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT, d=0.8, t="in_back").start(box2_info)
+        Image:
+            source: "hello2.png"
+            size_hint_x: None
+            width: STANDARD_INCREMENT * 2.5
+            x: root.width - self.width + STANDARD_INCREMENT
+        MDLabel:
+            text: "View Applied Jobs"
+            font_style: "H6"
+            adaptive_height: True
+            bold:True
+            #x: "12dp"
+            #y:"4dp"
+            pos_hint:{"center_x":0.7,"center_y":0.7}
+        MDLabel:
+            text: " \n \n Keep info of jobs you have applied"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.5}
+        MDIconButton:
+            icon: "arrow-right-circle-outline"
+            #badge_icon: "numeric-10"
+            pos_hint: {"center_x": 0.6, "center_y":0.12}
+            on_release:
+                app.on_click_showstudentappliedjoblist()
+
+        MDLabel:
+            text: "Update Your Profile"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.12}
+<CardItem3@RelativeLayout>
+    size_hint_y:None
+    height:'150dp'
+    radius:[50]
+    elevation: 0
+    MDCard:
+        Widget:
+            size_hint_x: 0.8
+
+        MDBoxLayout:
+            orientation: "vertical"
+            id: box3
+            padding: 0,0,"48dp","12dp"
+            MDLabel:
+                text: "Visit"
+                bold: True
+                font_style: "H6"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.5}
+            Spacer:
+            MDLabel:
+                text: "Our Website"
+                font_style: "Caption"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.6}
+            Spacer:
+
+            MDFlatButton:
+                elevation: 0
+                text:"Click Me"
+                -width: box3.width
+                -height: "48dp"
+                md_bg_color: rgba(95, 176, 179, 255)
+                on_release: Animation(x=0, d=0.8, t="out_back").start(box3_info)
+
+
+    MDRelativeLayout:
+        radius: [0,15,15,0]
+        id: box3_info
+        size_hint_y: None
+        height: root.height -dp(24)
+        md_bg_color: rgba(95, 176, 179, 255)
+        x: STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT
+        y: dp(12)
+        on_touch_down:
+            Animation(x=STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT, d=0.8, t="in_back").start(box3_info)
+        Image:
+            source: "newworld.png"
+            size_hint_x: None
+            width: STANDARD_INCREMENT * 2.5
+            x: root.width - self.width + STANDARD_INCREMENT
+        MDLabel:
+            text: "Do Visit Our Website"
+            font_style: "H6"
+            adaptive_height: True
+            bold:True
+            #x: "12dp"
+            #y:"4dp"
+            pos_hint:{"center_x":0.6,"center_y":0.7}
+        MDLabel:
+            text: " \n \n For latest college notifications"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.6,"center_y":0.5}
+        MDIconButton:
+            icon: "arrow-right-circle-outline"
+            #badge_icon: "numeric-10"
+            pos_hint: {"center_x": 0.6, "center_y":0.12}
+            on_release:
+                import webbrowser
+                webbrowser.open('http://www.karimganjcollege.ac.in/')
+
+        MDLabel:
+            text: "Click to know more "
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.12}
+<CardItem4@RelativeLayout>
+    size_hint_y:None
+    height:'250dp'
+    radius:[50]
+    elevation: 0
+    Image:
+        source: "graduate1.png"
+        pos_hint: {'center_x':0.2,'center_y':0.5}
+    MDLabel:
+        text:"We Make"
+        font_style: "H5"
+        font_name: "CPoppins"
+        pos_hint: {'center_x':0.95,'center_y':0.7}
+    MDLabel:
+        text:"Your"
+        font_style: "H5"
+        font_name: "CPoppins"
+        pos_hint: {'center_x':0.95,'center_y':0.6}
+    MDLabel:
+        text:"Dreams"
+        font_style: "H5"
+        font_name: "CPoppins"
+        pos_hint: {'center_x':0.95,'center_y':0.5}
+    MDLabel:
+        text:"Come True"
+        font_style: "H5"
+        font_name: "CPoppins"
+        pos_hint: {'center_x':0.95,'center_y':0.4}

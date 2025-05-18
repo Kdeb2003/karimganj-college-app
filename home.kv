@@ -1,0 +1,68 @@
+#:include tinni2.kv
+MDScreen:
+    name: "home"
+    #md_bg_color: rgba(95, 176, 179, 255)
+    MDFloatLayout:
+        MDTopAppBar:
+            md_bg_color: rgba(95, 176, 179, 255)
+            pos_hint: {"center_x":0.5,"center_y":0.04}
+        MDIconButton:
+            icon: "home"
+            pos_hint: {"center_x":0.15,"center_y":0.05}
+            theme_icon_color : "Custom"
+            icon_color: rgba(255, 255, 255, 255)
+            on_press:
+                root.manager.current = 'home'
+                root.manager.transition.direction = "left"
+
+        MDIconButton:
+            icon: "bell"
+            pos_hint: {"center_x":0.47,"center_y":0.05}
+            theme_icon_color : "Custom"
+            icon_color: rgba(255, 255, 255, 255)
+            on_press:
+                app.on_click_showstudentsnotification()
+        MDIconButton:
+            icon: "account"
+            pos_hint: {"center_x":0.8,"center_y":0.05}
+            theme_icon_color : "Custom"
+            icon_color: rgba(255, 255, 255, 255)
+            on_release:
+                app.display_data()
+                app.shw_image()
+                #app.check_and_update_button_state()
+                root.manager.current = 'profile'
+                root.manager.transition.direction = "left"
+        MDTopAppBar:
+            md_bg_color: rgba(95, 176, 179, 255)
+            pos_hint: {"center_x":0.5,"center_y":0.95}
+        MDLabel:
+            id: comp_name
+            text: "Student Dashboard"
+            font_name: "DPoppins"
+            font_size: "25sp"
+            pos_hint: {"center_x":0.63,"center_y":0.94}
+            theme_text_color: "Custom"
+            text_color: rgba(222, 254, 237,255)
+
+
+    MDBoxLayout:
+        orientation: "vertical"
+        pos_hint: {"center_y":0.52}
+        size_hint_y:0.75
+        ScrollView:
+
+            bar_color: [0, 0, 255, 1]
+            bar_width: 2
+            MDList:
+                id: hula_list
+                CardItem:
+                CardItem1:
+                CardItem2:
+                CardItem3:
+                CardItem4:
+
+
+
+
+

@@ -1,0 +1,208 @@
+MDScreen:
+    name:"addjob"
+    MDFloatLayout:
+        MDIconButton:
+            icon : "chevron-left"
+            pos_hint : {"center_y" :0.9}
+            icon_size: "30sp"
+            theme_text_color: "Custom"
+            text_color : rgba(26, 24, 58, 255)
+            on_release:
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'companyhome'
+        BoxLayout:
+            size_hint: (1, 1)
+            padding : 35
+
+            ScrollView:
+                bar_color: [0, 0, 255, 1]
+                bar_width: 2
+                BoxLayout:
+
+                    spacing: 30
+                    #size: (self.parent.width, self.parent.height)
+                    #size: (self.parent.width, self.parent.height-1)
+                    id: container
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                    MDLabel:
+                        size_hint: (1,None)
+                        pos_hint :{"center_x": 0.75, "center_y": 0.9}
+                        color: rgba(95, 176, 179, 255)
+                        markup: True
+                        text: "[b]Provide Job[/b]"
+                        markup: True
+                        font_size: "25sp"
+                    MDTextField:
+                        id: jobcodeprovideid
+                        markup: True
+                        hint_text : "Job Code"
+                        helper_text: "Eg. google1"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+
+                    MDTextField:
+                        id: jobtitleprovideid
+                        markup: True
+                        hint_text : "Job Title"
+                        helper_text: "Eg: Analyst, Software Developer, etc."
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+
+                    MDTextField:
+                        id: companyidprovide
+                        markup: True
+                        hint_text : "Company ID"
+                        helper_text: "Provide Company ID"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+
+                    MDTextField:
+                        id: companynameprovideid
+                        markup: True
+                        hint_text : "Company Name"
+                        helper_text: "Provide Your Company Name"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+
+                    MDTextField:
+                        id: jobdescriptionprovide
+                        markup: True
+                        hint_text : "Job Description"
+                        helper_text: "Provide Job Description"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+                        multiline: True
+
+                    MDTextField:
+                        id : salaryprovideid
+                        markup: True
+                        hint_text : "Provide Salary Range"
+                        helper_text: "Eg: 5 to 6 LPA"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+                    MDTextField:
+                        id : dateofprovidingjob
+                        markup: True
+                        hint_text : "Date of Provide"
+                        helper_text: "Eg: 2024-07-15"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+                    MDTextField:
+                        id : lastdateofapplying
+                        markup: True
+                        hint_text : "Last Date of Application"
+                        helper_text: "Eg: 2024-07-30"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+                    MDLabel:
+                        text: ""
+                    MDLabel:
+                        text: ""
+                    MDLabel:
+                        text: ""
+        MDFloatLayout:
+            size_hint: None, None
+            size: dp(200), dp(60)
+            pos_hint: {"center_x":0.5,"center_y":0.08}
+            canvas.before:
+                Color:
+                    rgba: (205/255, 242/255, 225/255, 200/255)  # Background color
+                    #rgba: (255/255, 255/255, 255/255, 150/255)  # Background color
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius : [15,15,15,15]
+        MDTextButton:
+            text: "SUBMIT"
+            pos_hint: {"center_x":0.8,"center_y":0.08}
+            size_hint_x: 0.8
+            size_hint_y: 0.05
+            font_size: "17dp"
+            bold : True
+            on_release:
+                app.send_data5(jobcodeprovideid, jobtitleprovideid,companyidprovide,companynameprovideid,jobdescriptionprovide,salaryprovideid,dateofprovidingjob,lastdateofapplying)
+                root.manager.transition.direction = "left"
+                root.manager.current = "companyhome"

@@ -1,0 +1,197 @@
+MDScreen:
+    name: "companyseesstudentapplication"
+    MDFloatLayout:
+        MDTopAppBar:
+            md_bg_color: rgba(95, 176, 179, 255)
+            pos_hint: {"center_x":0.5,"center_y":0.95}
+        MDLabel:
+            text: "Application"
+            font_name: "DPoppins"
+            font_size: "25dp"
+            pos_hint: {"center_x":0.77,"center_y":0.95}
+            theme_text_color: "Custom"
+            text_color: rgba(255,255,255,255)
+        MDIconButton:
+            icon : "chevron-left"
+            pos_hint : {"center_y" :0.95}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color : rgba(255,255,255,255)
+            on_release:
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'Company_Notification'
+
+        MDLabel:
+            id : jobtitleviewtocompany
+            text: ""
+            font_name : "DPoppins"
+            font_size: "20sp"
+            halign: "center"
+            pos_hint: {"center_x":0.5,"center_y":0.855}
+        MDFloatLayout:
+            md_bg_color: rgba(0,0,0,255)
+            size_hint : 0.7, 0.002
+            pos_hint: {"center_x" :0.5, "center_y": 0.835}
+    MDGridLayout:
+        cols: 3
+        rows: 4
+        size_hint: None, None
+        size: "300dp", "150dp"
+        pos_hint: {"center_x":0.5,"center_y":0.7}
+        MDLabel:
+            text: "Job Code"
+            allow_selection: True
+            font_name:"MPoppins"
+            font_size:"15sp"
+            halign: "center"
+            #pos_hint:{"center_x" :0.3, "center_y": 0.78}
+        MDLabel:
+            text: ": -"
+            allow_selection: True
+            font_name:"MPoppins"
+            font_size:"15sp"
+            halign: "center"
+            #pos_hint:{"center_x" :0.3, "center_y": 0.78}
+        MDLabel:
+            id: jobidviewtocompany
+            text: " "
+            allow_selection: True
+            font_name:"MPoppins"
+            font_size:"13sp"
+            halign: "center"
+            #pos_hint:{"center_x" :0.7, "center_y": 0.78}
+        MDLabel:
+            text: "Name"
+            font_name:"MPoppins"
+            font_size:"15sp"
+            halign: "center"
+            #pos_hint:{"center_x" :0.3, "center_y": 0.72}
+        MDLabel:
+            text: ": -"
+            allow_selection: True
+            font_name:"MPoppins"
+            font_size:"15sp"
+            halign: "center"
+            #pos_hint:{"center_x" :0.3, "center_y": 0.78}
+        MDLabel:
+            id: stunametocompany
+            text: " "
+            allow_selection: True
+            font_name:"MPoppins"
+            font_size:"13sp"
+            halign: "center"
+            #pos_hint:{"center_x" :0.7, "center_y": 0.72}
+        MDLabel:
+            text: "Email ID"
+            font_name : "MPoppins"
+            font_size:"15sp"
+            halign: "center"
+            #pos_hint:{"center_x" :0.3, "center_y": 0.65}
+        MDLabel:
+            text: ": -"
+            allow_selection: True
+            font_name:"MPoppins"
+            font_size:"15sp"
+            halign: "center"
+            #pos_hint:{"center_x" :0.3, "center_y": 0.78}
+        MDLabel:
+            id: studentemailidviewtocompany
+            text: " "
+            font_name : "MPoppins"
+            font_size:"13sp"
+            halign: "center"
+            #pos_hint:{"center_x" :0.7, "center_y": 0.65}
+        MDLabel:
+            text: "Company Name"
+            font_name : "MPoppins"
+            font_size:"15sp"
+            halign: "center"
+            #pos_hint:{"center_x" :0.3, "center_y": 0.65}
+        MDLabel:
+            text: ": -"
+            allow_selection: True
+            font_name:"MPoppins"
+            font_size:"15sp"
+            halign: "center"
+            #pos_hint:{"center_x" :0.3, "center_y": 0.78}
+        MDLabel:
+            id: companyname
+            text: " "
+            font_name : "MPoppins"
+            font_size:"13sp"
+            halign: "center"
+            #pos_hint:{"center_x" :0.7, "center_y": 0.65}
+
+
+
+    BoxLayout:
+        orientation: "vertical"
+        pos_hint: {"center_x":0.52,"center_y":0.75}
+        BoxLayout:
+            orientation: "vertical"
+            spacing: "5dp"
+            MDCard:
+                size_hint: None, None
+                size: "300dp", "70dp"
+                #elevation: 10
+                md_bg_color: rgba(219, 226, 228,255)
+                padding: "10dp"
+
+                ScrollView:
+                    MDList:
+                        id: studentpdf
+            MDCard:
+                size_hint: None, None
+                size: "300dp", "100dp"
+                #elevation: 10
+                md_bg_color: rgba(219, 226, 228,255)
+                padding: "10dp"
+
+                ScrollView:
+
+                    MDLabel:
+                        id: whyapplyingviewtocompany
+                        text: " "
+                        theme_text_color: "Primary"
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        #padding: "10dp"
+                        font_style: "Body1"
+
+    BoxLayout:
+        orientation: "vertical"
+        pos_hint: {"center_x":0.52,"center_y":0.53}
+        spacing: "5dp"
+        BoxLayout:
+            orientation: "vertical"
+            MDCard:
+                size_hint: None, None
+                size: "300dp", "80dp"
+                #elevation: 10
+                md_bg_color: rgba(219, 226, 228,255)
+                padding: "10dp"
+
+                ScrollView:
+
+                    MDLabel:
+                        id: whyhireviewtocompany
+                        text: " "
+                        theme_text_color: "Primary"
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        #padding: "10dp"
+                        font_style: "Body1"
+        MDRaisedButton:
+            text: "Student Details"
+            theme_text_color: "Custom"
+            text_color: "black"
+            #halign: "center"
+            pos_hint: {"center_x":0.485,"center_y":0.85}
+            md_bg_color : rgba(95, 176, 179, 255)
+            size_hint_x:0.95
+            elevation: 0
+            on_release:
+                app.shw_image2()
+                root.manager.current = "studentdetailsthathaveappliedjobs"
+
+

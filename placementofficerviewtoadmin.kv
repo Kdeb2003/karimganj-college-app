@@ -1,0 +1,131 @@
+MDScreen:
+    name: "poviewtoadmin"
+    MDFloatLayout:
+        MDTopAppBar:
+            md_bg_color: rgba(95, 176, 179, 255)
+            pos_hint: {"center_x":0.5,"center_y":0.95}
+        MDLabel:
+            text: "Placement Officer Details"
+            font_name: "DPoppins"
+            font_size: "20sp"
+            pos_hint: {"center_x":0.585,"center_y":0.94}
+            theme_text_color: "Custom"
+            text_color: rgba(222, 254, 237,255)
+        MDIconButton:
+            icon: "chevron-left"
+            pos_hint: {"center_x":0.05,"center_y":0.94}
+            user_font_size: "20sp"
+            theme_text_color: "Custom"
+            text_color: rgba(71,92,119,255)
+            on_release:
+                root.manager.current = "adminhome"
+        MDGridLayout:
+            cols:2
+            rows: 6
+            size_hint: None, None
+            size: "300dp","350dp"
+            pos_hint: {"center_x":0.5,"center_y":0.5}
+            md_bg_color: rgba(239,230,234,255)
+            MDLabel:
+                text: "Name: -"
+                pos_hint: {"center_x":0.5,"center_y":0.5}
+                halign: "center"
+                font_name: "DPoppins"
+                font_size: "20sp"
+                color: rgba(71,92,119,255)
+            MDLabel:
+                id: name
+                text: " "
+                pos_hint: {"center_x":0.5,"center_y":0.5}
+                halign: "center"
+                font_name: "DPoppins"
+                font_size: "20sp"
+                color: rgba(71,92,119,255)
+            MDLabel:
+                text: "Email ID: -"
+                halign: "center"
+                pos_hint: {"center_x":9,"center_y":0.5}
+                theme_text_color: "Custom"
+                text_color: rgba(71,92,119,255)
+                font_size: "14sp"
+
+            MDLabel:
+                id: my_label
+                text: " "
+                pos_hint: {"center_x":5,"center_y":0.5}
+                halign: "center"
+                font_name: "DPoppins"
+                font_size: "12sp"
+                color: rgba(71,92,119,255)
+
+            MDLabel:
+                text: "Phone No: -"
+                halign: "center"
+                pos_hint: {"center_x":9,"center_y":0.5}
+                theme_text_color: "Custom"
+                text_color: rgba(71,92,119,255)
+                font_size: "17sp"
+
+            MDLabel:
+                id: phone
+                text: " "
+                pos_hint: {"center_x":5,"center_y":0.5}
+                halign: "center"
+                font_name: "DPoppins"
+                font_size: "12sp"
+                color: rgba(45, 174, 255,255)
+            MDLabel:
+                text: "Address: -"
+                halign: "center"
+                pos_hint: {"center_x":9,"center_y":0.5}
+                theme_text_color: "Custom"
+                text_color: rgba(71,92,119,255)
+                font_size: "15sp"
+
+            MDLabel:
+                id: addr
+                text: " "
+                pos_hint: {"center_x":5,"center_y":0.5}
+                halign: "center"
+                font_name: "DPoppins"
+                font_size: "12sp"
+                color: rgba(66, 103, 164,255)
+
+            MDLabel:
+                text: "PO ID: -"
+                halign: "center"
+                pos_hint: {"center_x":9,"center_y":0.5}
+                theme_text_color: "Custom"
+                text_color: rgba(71,92,119,255)
+                font_size: "15sp"
+            MDLabel:
+                id: id
+                text: " "
+                pos_hint: {"center_x":5,"center_y":0.5}
+                halign: "center"
+                font_name: "DPoppins"
+                font_size: "12sp"
+                color: rgba(130, 116, 255,255)
+            MDLabel:
+                text: "Department: -"
+                halign: "center"
+                pos_hint: {"center_x":9,"center_y":0.5}
+                theme_text_color: "Custom"
+                text_color: rgba(71,92,119,255)
+                font_size: "15sp"
+
+            MDLabel:
+                id: dept
+                text: " "
+                pos_hint: {"center_x":5,"center_y":0.5}
+                halign: "center"
+                font_name: "DPoppins"
+                font_size: "12sp"
+                color: rgba(130, 116, 255,255)
+
+
+        MDRaisedButton:
+            text: "Remove Placement officer"
+            pos_hint: {"center_x":0.5,"center_y":0.1}
+            on_release:
+                app.removepo()

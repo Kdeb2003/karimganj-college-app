@@ -1,0 +1,388 @@
+#:import STANDARD_INCREMENT kivymd.material_resources.STANDARD_INCREMENT
+#:import Animation kivy.animation.Animation
+<Spacer@Widget>
+    size_hint_y: None
+    height: "12dp"
+
+
+<CardItem@RelativeLayout>
+    size_hint_y:None
+    height:'150dp'
+    radius:[50]
+    elevation: 0
+    MDCard:
+        Widget:
+            size_hint_x: 1
+
+        MDBoxLayout:
+            orientation: "vertical"
+            id: box
+            padding: 0,0,"48dp","12dp"
+            MDLabel:
+                id: companyname
+                text: ""
+                bold: True
+                font_style: "H6"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.5}
+            Spacer:
+            MDLabel:
+                text: "Data Analyst"
+                font_style: "Caption"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.6}
+            Spacer:
+
+            MDRaisedButton:
+                text:"Know More"
+                -width: box.width
+                -height: "48dp"
+                on_release:Animation(x=0, d=0.8, t="out_back").start(box_info)
+    MDRelativeLayout:
+        radius: [0,15,15,0]
+        id: box_info
+        size_hint_y: None
+        height: root.height -dp(24)
+        md_bg_color: rgba(95, 176, 179, 255)
+        x: STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT
+        y: dp(12)
+        on_touch_down:
+            Animation(x=STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT, d=0.8, t="in_back").start(box_info)
+        Image:
+            source: "notun.png"
+            size_hint_x: None
+            width: STANDARD_INCREMENT * 2.5
+            x: root.width - self.width + STANDARD_INCREMENT
+        MDLabel:
+            text: "Tata Consultancy Service"
+            font_style: "H6"
+            adaptive_height: True
+            bold:True
+            #x: "12dp"
+            #y:"4dp"
+            pos_hint:{"center_x":0.6,"center_y":0.7}
+        MDLabel:
+            text: " \n \n Post: - Data Analyst"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.6}
+        MDLabel:
+            text: " \n \n Last Date: - 26th May"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.5}
+        MDIconButton:
+            icon: "arrow-right-circle-outline"
+            #badge_icon: "numeric-10"
+            pos_hint: {"center_x": 0.6, "center_y":0.12}
+            on_release:
+                app.change_screen("jobview")
+        MDLabel:
+            text: "Click to Apply"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.12}
+<CardItem1@RelativeLayout>
+    size_hint_y:None
+    height:'150dp'
+    radius:[50]
+    elevation: 0
+    MDCard:
+        Widget:
+            size_hint_x: 1
+
+        MDBoxLayout:
+            orientation: "vertical"
+            id: box
+            padding: 0,0,"48dp","12dp"
+            MDLabel:
+                text: "Deloitte"
+                bold: True
+                font_style: "H6"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.5}
+            Spacer:
+            MDLabel:
+                text: "Sales Executive"
+                font_style: "Caption"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.6}
+            Spacer:
+
+            MDRaisedButton:
+                text:"Know More"
+                -width: box.width
+                -height: "48dp"
+                on_release:Animation(x=0, d=0.8, t="out_back").start(box1_info)
+    MDRelativeLayout:
+        radius: [0,15,15,0]
+        id: box1_info
+        size_hint_y: None
+        height: root.height -dp(24)
+        md_bg_color: rgba(95, 176, 179, 255)
+        x: STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT
+        y: dp(12)
+        on_touch_down:
+            Animation(x=STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT, d=0.8, t="in_back").start(box1_info)
+        Image:
+            source: "notun.png"
+            size_hint_x: None
+            width: STANDARD_INCREMENT * 2.5
+            x: root.width - self.width + STANDARD_INCREMENT
+        MDLabel:
+            text: "Deloitte"
+            font_style: "H6"
+            adaptive_height: True
+            bold:True
+            #x: "12dp"
+            #y:"4dp"
+            pos_hint:{"center_x":0.8,"center_y":0.7}
+        MDLabel:
+            text: " \n \n Post: - Sales Executive"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.6}
+        MDLabel:
+            text: " \n \n Last Date: - 2nd June"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.5}
+        MDIconButton:
+            icon: "arrow-right-circle-outline"
+            #badge_icon: "numeric-10"
+            pos_hint: {"center_x": 0.6, "center_y":0.12}
+            on_release:
+                app.change_screen("jobview")
+        MDLabel:
+            text: "Click to Apply"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.12}
+<CardItem2@RelativeLayout>
+    size_hint_y:None
+    height:'150dp'
+    radius:[50]
+    elevation: 0
+    MDCard:
+        Widget:
+            size_hint_x: 1
+
+        MDBoxLayout:
+            orientation: "vertical"
+            id: box
+            padding: 0,0,"48dp","12dp"
+            MDLabel:
+                text: "Wipro"
+                bold: True
+                font_style: "H6"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.5}
+            Spacer:
+            MDLabel:
+                text: "Sales Executive"
+                font_style: "Caption"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.6}
+            Spacer:
+
+            MDRaisedButton:
+                text:"Know More"
+                -width: box.width
+                -height: "48dp"
+                on_release:Animation(x=0, d=0.8, t="out_back").start(box2_info)
+    MDRelativeLayout:
+        radius: [0,15,15,0]
+        id: box2_info
+        size_hint_y: None
+        height: root.height -dp(24)
+        md_bg_color: rgba(95, 176, 179, 255)
+        x: STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT
+        y: dp(12)
+        on_touch_down:
+            Animation(x=STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT, d=0.8, t="in_back").start(box2_info)
+        Image:
+            source: "notun.png"
+            size_hint_x: None
+            width: STANDARD_INCREMENT * 2.5
+            x: root.width - self.width + STANDARD_INCREMENT
+        MDLabel:
+            text: "Wipro"
+            font_style: "H6"
+            adaptive_height: True
+            bold:True
+            #x: "12dp"
+            #y:"4dp"
+            pos_hint:{"center_x":0.8,"center_y":0.7}
+        MDLabel:
+            text: " \n \n Post: - Sales Executive"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.6}
+        MDLabel:
+            text: " \n \n Last Date: - 1st June"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.5}
+        MDIconButton:
+            icon: "arrow-right-circle-outline"
+            #badge_icon: "numeric-10"
+            pos_hint: {"center_x": 0.6, "center_y":0.12}
+            on_release:
+                app.change_screen("jobview")
+        MDLabel:
+            text: "Click to Apply"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.12}
+<CardItem3@RelativeLayout>
+    size_hint_y:None
+    height:'150dp'
+    radius:[50]
+    elevation: 0
+    MDCard:
+        Widget:
+            size_hint_x: 1
+
+        MDBoxLayout:
+            orientation: "vertical"
+            id: box
+            padding: 0,0,"48dp","12dp"
+            MDLabel:
+                text: "Infosys"
+                bold: True
+                font_style: "H6"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.5}
+            Spacer:
+            MDLabel:
+                text: "Junior Developer"
+                font_style: "Caption"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.6}
+            Spacer:
+
+            MDRaisedButton:
+                text:"Know More"
+                -width: box.width
+                -height: "48dp"
+                on_release:Animation(x=0, d=0.8, t="out_back").start(box3_info)
+    MDRelativeLayout:
+        radius: [0,15,15,0]
+        id: box3_info
+        size_hint_y: None
+        height: root.height -dp(24)
+        md_bg_color: rgba(95, 176, 179, 255)
+        x: STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT
+        y: dp(12)
+        on_touch_down:
+            Animation(x=STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT, d=0.8, t="in_back").start(box3_info)
+        Image:
+            source: "notun.png"
+            size_hint_x: None
+            width: STANDARD_INCREMENT * 2.5
+            x: root.width - self.width + STANDARD_INCREMENT
+        MDLabel:
+            text: "Infosys"
+            font_style: "H6"
+            adaptive_height: True
+            bold:True
+            #x: "12dp"
+            #y:"4dp"
+            pos_hint:{"center_x":0.8,"center_y":0.7}
+        MDLabel:
+            text: " \n \n Post: - Jr. Software Developer"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.6}
+        MDLabel:
+            text: " \n \n Last Date: - 31st May"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.5}
+        MDIconButton:
+            icon: "arrow-right-circle-outline"
+            #badge_icon: "numeric-10"
+            pos_hint: {"center_x": 0.6, "center_y":0.12}
+            on_release:
+                app.change_screen("jobview")
+        MDLabel:
+            text: "Click to Apply"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.12}
+<CardItem4@RelativeLayout>
+    size_hint_y:None
+    height:'150dp'
+    radius:[50]
+    elevation: 0
+    MDCard:
+        Widget:
+            size_hint_x: 1
+
+        MDBoxLayout:
+            orientation: "vertical"
+            id: box
+            padding: 0,0,"48dp","12dp"
+            MDLabel:
+                text: "Microsoft"
+                bold: True
+                font_style: "H6"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.5}
+            Spacer:
+            MDLabel:
+                text: "Junior Analyst"
+                font_style: "Caption"
+                adaptive_height: "True"
+                pos_hint: {"center_x":0.5,"center_y":0.6}
+            Spacer:
+
+            MDRaisedButton:
+                text:"Know More"
+                -width: box.width
+                -height: "48dp"
+                on_release:Animation(x=0, d=0.8, t="out_back").start(box4_info)
+    MDRelativeLayout:
+        radius: [0,15,15,0]
+        id: box4_info
+        size_hint_y: None
+        height: root.height -dp(24)
+        md_bg_color: rgba(95, 176, 179, 255)
+        x: STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT
+        y: dp(12)
+        on_touch_down:
+            Animation(x=STANDARD_INCREMENT * 2-root.width - STANDARD_INCREMENT, d=0.8, t="in_back").start(box4_info)
+        Image:
+            source: "notun.png"
+            size_hint_x: None
+            width: STANDARD_INCREMENT * 2.5
+            x: root.width - self.width + STANDARD_INCREMENT
+        MDLabel:
+            text: "Microsoft"
+            font_style: "H6"
+            adaptive_height: True
+            bold:True
+            #x: "12dp"
+            #y:"4dp"
+            pos_hint:{"center_x":0.8,"center_y":0.7}
+        MDLabel:
+            text: " \n \n Post: - Jr. Data Analyst"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.6}
+        MDLabel:
+            text: " \n \n Last Date: - 31st May"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.5}
+        MDIconButton:
+            icon: "arrow-right-circle-outline"
+            #badge_icon: "numeric-10"
+            pos_hint: {"center_x": 0.6, "center_y":0.12}
+            on_release:
+                app.change_screen("jobview")
+        MDLabel:
+            text: "Click to Apply"
+            font_style: "Caption"
+            adaptive_height: "True"
+            pos_hint: {"center_x":0.7,"center_y":0.12}

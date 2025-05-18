@@ -1,0 +1,172 @@
+MDScreen:
+    name: "viewjob"
+
+    MDFloatLayout:
+        md_bg_color: rgba(245, 245, 245, 255)
+
+        MDTopAppBar:
+            md_bg_color: rgba(95, 176, 179, 255)
+            pos_hint: {"top": 1}
+            elevation: 2
+        MDLabel:
+            text: "Job Details"
+            font_name: "DPoppins"
+            font_size: "22sp"
+            pos_hint: {"center_x":0.8,"center_y":0.94}
+            theme_text_color: "Custom"
+            text_color: rgba(222, 254, 237,255)
+        MDIconButton:
+            icon: "chevron-left"
+            pos_hint: {"center_y": 0.94, "x": 0.02}
+            user_font_size: "30sp"
+            icon_size: "30sp"
+            theme_text_color: "Custom"
+            text_color: rgba(222, 254, 237,255)
+            on_release:
+                root.manager.transition.direction = 'right'
+                app.on_click_showjoblist()
+
+        ScrollView:
+            pos_hint: {"center_x": 0.5, "center_y": 0.45}
+            size_hint: 1, 0.8
+
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                padding: dp(20)
+                spacing: dp(15)
+
+                MDCard:
+                    orientation: "vertical"
+                    size_hint: None, None
+                    size: "280dp", "60dp"
+                    elevation: 2
+                    padding: dp(15)
+                    MDLabel:
+                        text: "Job ID"
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Secondary"
+                    MDLabel:
+                        id: job_id
+                        text: " "
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Primary"
+
+                MDCard:
+                    orientation: "vertical"
+                    size_hint: None, None
+                    size: "280dp", "60dp"
+                    elevation: 2
+                    padding: dp(15)
+                    MDLabel:
+                        text: "Job Title"
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Secondary"
+                    MDLabel:
+                        id: job_title
+                        text: " "
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Primary"
+
+                MDCard:
+                    orientation: "vertical"
+                    size_hint: None, None
+                    size: "280dp", "60dp"
+                    elevation: 2
+                    padding: dp(15)
+                    MDLabel:
+                        text: "Company ID"
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Secondary"
+                    MDLabel:
+                        id: company_id
+                        text: " "
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Primary"
+
+                MDCard:
+                    orientation: "vertical"
+                    size_hint: None, None
+                    size: "280dp", "60dp"
+                    elevation: 2
+                    padding: dp(15)
+                    MDLabel:
+                        text: "Job Provided Date"
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Secondary"
+                    MDLabel:
+                        id: Providing_Date
+                        text: " "
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Primary"
+
+                MDCard:
+                    orientation: "vertical"
+                    size_hint: None, None
+                    size: "280dp", "60dp"
+                    elevation: 2
+                    padding: dp(15)
+                    MDLabel:
+                        text: "Last Date of Applying"
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Secondary"
+                    MDLabel:
+                        id: Last_date
+                        text: " "
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Primary"
+
+                MDCard:
+                    orientation: "vertical"
+                    size_hint: None, None
+                    size: "280dp", "60dp"
+                    elevation: 2
+                    padding: dp(15)
+                    MDLabel:
+                        text: "CTC"
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Secondary"
+                    MDLabel:
+                        id: Salary
+                        text: " "
+                        font_name: "MPoppins"
+                        font_size: "15sp"
+                        theme_text_color: "Primary"
+
+                BoxLayout:
+                    orientation: "horizontal"
+                    spacing: dp(20)
+                    padding: [0, dp(20), 0, 0]
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                    MDRaisedButton:
+                        text: "[b]Update[/b]"
+                        markup: True
+                        md_bg_color: rgba(95, 176, 179, 255)
+                        pos_hint: {"center_x": 0.5}
+                        size_hint_x: 0.4
+                        on_release:
+                            app.showjobdetailstoupdatepage()
+                            root.manager.current = "updatejobdetails"
+
+                    MDRaisedButton:
+                        text: "[b]Remove[/b]"
+                        markup: True
+                        md_bg_color: rgba(255, 84, 66, 255)
+                        pos_hint: {"center_x": 0.5}
+                        size_hint_x: 0.4
+                        on_release:
+                            app.removejob()

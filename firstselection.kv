@@ -1,0 +1,32 @@
+MDScreen:
+    name: "FS"
+    MDFloatLayout:
+        MDLabel:
+            text : "Karimganj College Online"
+            font_name : "DPoppins"
+            font_size : "20sp"
+            pos_hint : {"center_x":0.5,"center_y": 0.95}
+            halign : "center"
+            color: rgba( 34, 34 ,34, 255)
+        MDFloatLayout:
+            md_bg_color: rgba(0,0,0,255)
+            size_hint : 0.9, 0.002
+            pos_hint: {"center_x" :0.5, "center_y": 0.91}
+        MDLabel:
+            text : "Select Designation"
+            font_name: "MPoppins"
+            font_size : "20sp"
+
+            pos_hint : {"center_x":0.7,"center_y": 0.85}
+
+            color: rgba(0,0,72, 255)
+        MDGridLayout:
+            cols:2
+            rows:2
+            pos_hint: {"center_x":0.5,"center_y":0.5}
+            padding: "10dp"
+            spacing: "10dp"
+            MDRectangleFlatButton:
+                text: "Student"
+                icon: "graduate1.png"
+

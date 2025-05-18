@@ -1,0 +1,134 @@
+MDScreen:
+    name: "adminprofile"
+    MDFloatLayout:
+        md_bg_color: rgba(246,250,255,255)
+
+        ProfileCard:
+            size_hint_y: 0.65
+            pos_hint: {"center_y":0.7}
+            elevation: 10
+            md_bg_color: rgba(185, 245, 184, 255)
+            radius:[0,0,80,80]
+
+            MDIconButton:
+                icon: "arrow-left"
+                pos_hint: {"center_y":0.91}
+                user_font_size: "20sp"
+                theme_text_color: "Custom"
+                text_color: rgba(71,92,119,255)
+                on_release:
+                    root.manager.current = "adminhome"
+            MDLabel:
+                text: "Your Profile"
+                font_name: "DPoppins"
+                font_size: "20sp"
+                pos_hint: {"center_x":0.56,"center_y":0.82}
+                color: rgba(71,92,119,255)
+            AsyncImage:
+                id: admin_image
+                source: " "
+                pos_hint: {"center_x":0.5,"center_y":0.58}
+                size_hint: 0.3, 0.25
+            MDLabel:
+                id: name
+                text: " "
+                pos_hint: {"center_x":0.5,"center_y":0.4}
+                halign: "center"
+                font_name: "DPoppins"
+                font_size: "20sp"
+                color: rgba(71,92,119,255)
+
+            MDLabel:
+                id: my_label
+                text: " "
+                pos_hint: {"center_x":0.565,"center_y":0.25}
+                halign: "center"
+                font_name: "DPoppins"
+                font_size: "12sp"
+                color: rgba(71,92,119,255)
+
+            MDLabel:
+                id: phone
+                text: " "
+                pos_hint: {"center_x":0.51,"center_y":0.2}
+                halign: "center"
+                font_name: "DPoppins"
+                font_size: "12sp"
+                color: rgba(45, 174, 255,255)
+            MDIcon:
+                icon: "cellphone-basic"
+                pos_hint: {"center_x":0.32,"center_y":0.206}
+                theme_text_color: "Custom"
+                text_color: rgba(71,92,119,255)
+                font_size: "17sp"
+            MDLabel:
+                id: addr
+                text: " "
+                pos_hint: {"center_x":0.53,"center_y":0.15}
+                halign: "center"
+                font_name: "DPoppins"
+                font_size: "12sp"
+                color: rgba(66, 103, 164,255)
+
+            MDLabel:
+                id: id
+                text: " "
+                pos_hint: {"center_x":0.53,"center_y":0.1}
+                halign: "center"
+                font_name: "DPoppins"
+                font_size: "12sp"
+                color: rgba(130, 116, 255,255)
+
+    MDBoxLayout:
+        orientation: "vertical"
+        pos_hint: {"center_y":0.1}
+        size_hint_y:0.5
+        radius:[50,50,50,50]
+        md_bg_color:rgba(205, 242, 225, 255)
+        padding:"10dp"
+        spacing: "5dp"
+        ScrollView:
+            MDList:
+                spacing: "10dp"
+                MDCard:
+                    pos_hint_y: 0.95
+                    size_hint_y:None
+                    height:'80dp'
+                    md_bg_color: rgba(185, 245, 184, 255)
+                    radius:[50,50,50,50]
+                    padding: "15dp"
+                    AsyncImage:
+                        id: admin_image_preview
+                        source: " "
+                    MDRaisedButton:
+                        pos_hint: {"center_x":0.9,"center_y":0.5}
+                        text: "Upload Your Photo"
+                        on_release:
+                            app.open_file_manager3()
+
+                MDCard:
+                    size_hint_y:None
+                    height:'80dp'
+                    md_bg_color: rgba(185, 245, 184, 255)
+                    radius:[50,50,50,50]
+                    padding: "10dp"
+                    MDGridLayout:
+                        cols: 1
+                        padding: [dp(53),dp(13)]
+                        MDRaisedButton:
+                            pos_hint: {"center_x":0.5,"center_y":0.5}
+                            text: "Logout from the page"
+                            on_release:
+                                root.manager.current = 'login'
+                MDCard:
+                    size_hint_y:None
+                    height:'80dp'
+                    md_bg_color: rgba(205, 242, 225, 255)
+                    radius:[50,50,50,50]
+                    padding: "15dp"
+                    MDLabel:
+                        text: " "
+                        font_name: "DPoppins"
+                        theme_text_color: "Custom"
+                        text_color: rgba(220,225,225,255)
+                        font_size: "15sp"

@@ -1,0 +1,70 @@
+MDScreen:
+    name: "addnotice"
+    MDFloatLayout:
+        MDTopAppBar:
+            md_bg_color: rgba(95, 176, 179, 255)
+            pos_hint: {"center_x":0.5,"center_y":0.95}
+        MDIconButton:
+            icon : "arrow-left"
+            pos_hint : {"center_y" :0.95}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color : rgba(26, 24, 58, 255)
+            on_release:
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'pohome'
+        MDLabel:
+            text: "Add recent notice"
+            font_name: "DPoppins"
+            font_size: "20dp"
+            pos_hint:{"center_x":0.72,"center_y":0.95}
+
+        MDTextField:
+            id: noticeid
+            markup: True
+            hint_text : "Notice ID"
+            mode : "rectangle"
+            #size_hint : (1, None)
+            #height : 300
+            size_hint_x:0.85
+            pos_hint:{"center_x":0.5,"center_y":0.8}
+        MDTextField:
+            id: noticedate
+            markup: True
+            hint_text : "Date"
+            mode : "rectangle"
+            #size_hint : (1, None)
+            #height : 300
+            size_hint_x:0.85
+            pos_hint:{"center_x":0.5,"center_y":0.65}
+        MDTextField:
+            id: notice
+            markup: True
+            hint_text : "Provide notice"
+            multiline: True
+            max_text_length: 500
+            mode : "rectangle"
+            size_hint_x:0.85
+            pos_hint:{"center_x":0.5,"center_y":0.4}
+
+        MDRaisedButton:
+            text: "Select PDF"
+            pos_hint: {"center_x":0.5,"center_y":0.25}
+            size_hint_x:0.8
+            size_hint_y: 0.075
+            on_release:
+                app.file_manager_open1()
+        MDLabel:
+            id: notice_pdf_name
+            text: "No File Selected"
+            pos_hint: {"center_x":0.6,"center_y":0.18}
+            font_size: "10dp"
+        MDRaisedButton:
+            text: "Add Notice"
+            pos_hint: {"center_x":0.5,"center_y":0.1}
+            size_hint_x:0.8
+            size_hint_y: 0.075
+            on_release:
+                app.addnotice(noticeid,noticedate,notice)
+
+

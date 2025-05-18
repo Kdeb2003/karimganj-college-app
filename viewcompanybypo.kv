@@ -1,0 +1,161 @@
+MDScreen:
+    name: "viewcompany"
+    MDFloatLayout:
+        MDTopAppBar:
+            md_bg_color: rgba(95, 176, 179, 255)
+            pos_hint: {"center_x":0.5,"center_y":0.95}
+        MDLabel:
+            text: "Company Details"
+            font_name: "DPoppins"
+            font_size: "25dp"
+            pos_hint: {"center_x":0.7,"center_y":0.95}
+            theme_text_color: "Custom"
+            text_color: rgba(255,255,255,255)
+        MDIconButton:
+            icon : "arrow-left"
+            pos_hint : {"center_y" :0.95}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color : rgba(255,255,255,255)
+            on_release:
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'stuviewpo'
+
+    ScrollView:
+        pos_hint: {"center_x":0.5,"center_y":0.4}
+
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+            padding: dp(10)
+            spacing: dp(30)
+
+
+            MDGridLayout:
+                cols: 2
+                spacing : "20dp"
+                size_hint: None,None
+                size: "300dp","50dp"
+                MDLabel:
+                    text: "Company Name: -"
+                    pos_hint:{"center_x":0.5,"center_y":0.8}
+                    font_name: "MPoppins"
+                    font_size: "15sp"
+                    theme_text_color: "Custom"
+                    text_color: rgba(100,98,106,255)
+                MDLabel:
+                    id: com_name
+                    text: " "
+                    pos_hint:{"center_x":0.5,"center_y":0.8}
+                    font_name: "MPoppins"
+                    font_size: "15sp"
+                    theme_text_color: "Custom"
+                    text_color: rgba(100,98,106,255)
+            MDGridLayout:
+                cols: 2
+                spacing : "20dp"
+                size_hint: None,None
+                size: "300dp","50dp"
+                MDLabel:
+                    text: "Company ID"
+                    pos_hint:{"center_x":0.5,"center_y":0.7}
+                    font_name: "MPoppins"
+                    font_size: "15sp"
+                    theme_text_color: "Custom"
+                    text_color: rgba(100,98,106,255)
+                MDLabel:
+                    id:comid
+                    text: " "
+                    pos_hint:{"center_x":0.5,"center_y":0.7}
+                    font_name: "MPoppins"
+                    font_size: "15sp"
+                    theme_text_color: "Custom"
+                    text_color: rgba(100,98,106,255)
+            MDGridLayout:
+                cols: 2
+                spacing : "20dp"
+                size_hint: None,None
+                size: "300dp","50dp"
+                MDLabel:
+                    text: "Email ID: -"
+                    pos_hint:{"center_x":0.5,"center_y":0.6}
+                    font_name: "MPoppins"
+                    font_size: "15sp"
+                    theme_text_color: "Custom"
+                    text_color: rgba(100,98,106,255)
+                MDLabel:
+                    id: email_id
+                    text: " "
+                    pos_hint:{"center_x":0.5,"center_y":0.6}
+                    font_name: "MPoppins"
+                    font_size: "15sp"
+                    theme_text_color: "Custom"
+                    text_color: rgba(100,98,106,255)
+
+            MDGridLayout:
+                cols: 2
+                spacing : "20dp"
+                size_hint: None,None
+                size: "300dp","50dp"
+                MDLabel:
+                    text: "Phone No: -"
+                    pos_hint:{"center_x":0.5,"center_y":0.5}
+                    font_name: "MPoppins"
+                    font_size: "15sp"
+                    theme_text_color: "Custom"
+                    text_color: rgba(100,98,106,255)
+                MDLabel:
+                    id: phone
+                    text: " "
+                    pos_hint:{"center_x":0.5,"center_y":0.5}
+                    font_name: "MPoppins"
+                    font_size: "15sp"
+                    theme_text_color: "Custom"
+                    text_color: rgba(100,98,106,255)
+            MDGridLayout:
+                cols: 2
+                spacing : "20dp"
+                size_hint: None,None
+                size: "300dp","50dp"
+                MDLabel:
+                    text: "Address: -"
+                    pos_hint:{"center_x":0.5,"center_y":0.4}
+                    font_name: "MPoppins"
+                    font_size: "15sp"
+                    theme_text_color: "Custom"
+                    text_color: rgba(100,98,106,255)
+                MDLabel:
+                    id: addr
+                    text: " "
+                    pos_hint:{"center_x":0.5,"center_y":0.4}
+                    font_name: "MPoppins"
+                    font_size: "15sp"
+                    theme_text_color: "Custom"
+                    text_color: rgba(100,98,106,255)
+
+            MDFloatLayout:
+                MDRaisedButton:
+                    text: "Remove"
+                    pos_hint: {"center_x":0.5,"center_y":0.5}
+                    size_hint_x:0.9
+                    on_release:
+                        app.removecompany()
+
+
+            MDLabel:
+                text: " "
+            MDLabel:
+                text: " "
+            MDLabel:
+                text: " "
+            MDLabel:
+                text: " "
+            MDLabel:
+                text: " "
+            MDLabel:
+                text: " "
+            MDLabel:
+                text: " "
+            MDLabel:
+                text: " "

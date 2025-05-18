@@ -1,0 +1,45 @@
+#:import Snackbar kivymd.uix.snackbar.Snackbar
+#:import colors kivymd.color_definitions
+MDScreen:
+    name: "adminnotification"
+    MDFloatLayout:
+        MDTopAppBar:
+            md_bg_color: rgba(95, 176, 179, 255)
+            pos_hint: {"center_x":0.5,"center_y":0.04}
+        MDIconButton:
+            icon: "home"
+            pos_hint: {"center_x":0.2,"center_y":0.05}
+            theme_icon_color : "Custom"
+            icon_color: rgba(255, 255, 255, 255)
+            on_press:
+                root.manager.current = 'adminhome'
+                root.manager.transition.direction = "left"
+        MDIconButton:
+            icon: "bell"
+            pos_hint: {"center_x":0.5,"center_y":0.05}
+            theme_icon_color : "Custom"
+            icon_color: rgba(255, 255, 255, 255)
+            on_press:
+                root.manager.current = 'adminnotification'
+                root.manager.transition.direction = "left"
+
+        MDIconButton:
+            icon: "account"
+            pos_hint: {"center_x":0.8,"center_y":0.05}
+            theme_icon_color : "Custom"
+            icon_color: rgba(255, 255, 255, 255)
+            on_release:
+                app.shw_image3()
+                app.display_data4()
+                root.manager.current = 'adminprofile'
+                root.manager.transition.direction = "left"
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            title: 'Notifications'
+            specific_text_color: 1, 1, 1, 1
+            pos_hint: { "center_x":0.5,"center_y":0.9}
+        ScrollView:
+            MDList:
+                id: noticefrompotoadmin

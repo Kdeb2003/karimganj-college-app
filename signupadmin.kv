@@ -1,0 +1,139 @@
+MDScreen:
+    name: "signupadmin"
+    md_bg_color: rgba(255,255,255,255)
+    MDTopAppBar:
+        #title: "Register"
+        pos_hint: {"center_x":0.5,"center_y":0.95}
+        elevation: 3
+        md_bg_color: rgba(95, 176, 179, 255)
+    MDLabel:
+        text: "Register"
+        pos_hint: {"center_x":0.8,"center_y":0.95}
+        font_name: "comic"
+        font_size: "30dp"
+    MDIconButton:
+        icon : "arrow-left"
+        pos_hint : {"center_y" :0.95}
+        user_font_size: "30sp"
+        theme_text_color: "Custom"
+        text_color : rgba(26, 24, 58, 255)
+        on_release:
+            root.manager.transition.direction = 'right'
+            root.manager.current = 'selection'
+    ScrollView:
+        pos_hint: {"center_x":0.5,"center_y":0.37}
+
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+            padding: dp(10)
+            spacing: dp(30)
+
+
+
+            MDTextField:
+                id: user_id
+                hint_text: "User ID"
+                required: True
+                helper_text: "Must Be Unique"
+                helper_text_mode: "on_error"
+                font_name : "comic"
+                mode: "fill"
+                radius: [10]
+
+            MDTextField:
+                id: full_name
+                hint_text: "Name"
+                required: True
+                helper_text: "Enter Full Name"
+                helper_text_mode: "on_error"
+                font_name : "comic"
+                mode: "fill"
+                radius: [10]
+
+            MDGridLayout:
+                cols: 2
+                spacing : "20dp"
+                size_hint: None,None
+                size: "300dp","50dp"
+
+
+                MDTextField:
+                    id: email_id
+                    hint_text: "Email ID"
+                    required: True
+                    helper_text: "xyz@gmail.com"
+                    helper_text_mode: "on_error"
+                    input_type: "text"
+                    font_name : "comic"
+                    mode: "fill"
+                    radius: [10]
+                MDRaisedButton:
+                    text: "Verify"
+                    md_bg_color: rgba(0, 166, 250,255)
+                    on_release:
+                        app.send_otp1()
+
+            MDTextField:
+                id: phone_no
+                hint_text: "Phone No"
+                required: True
+                helper_text: "94364xxxxx"
+                helper_text_mode: "on_error"
+                input_type: "number"
+                max_text_length: 10
+                font_name : "comic"
+                mode: "fill"
+                radius: [10]
+
+            MDTextField:
+                id: address
+                hint_text: "Address"
+                required: True
+                helper_text: "Present Address"
+                helper_text_mode: "on_error"
+                font_name : "comic"
+                mode: "fill"
+                radius: [10]
+
+            MDTextField:
+                id: password
+                hint_text: "Password"
+                required: True
+                helper_text: "Use Ab@#123"
+                helper_text_mode: "on_error"
+                #password: True
+                font_name : "comic"
+                mode: "fill"
+                radius: [10]
+
+
+            MDGridLayout:
+                cols: 1
+                padding: "100dp"
+                #spacing: "10dp"
+
+
+                MDRaisedButton:
+                    text: "Submit"
+                    on_release:
+                        app.send_data1(user_id, full_name, email_id, phone_no, address, password)
+                        root.manager.current = 'login'
+
+            MDLabel:
+                text: " "
+            MDLabel:
+                text: " "
+            MDLabel:
+                text: " "
+            MDLabel:
+                text: " "
+            MDLabel:
+                text: " "
+            MDLabel:
+                text: " "
+            MDLabel:
+                text: " "
+            MDLabel:
+                text: " "

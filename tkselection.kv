@@ -1,0 +1,12 @@
+MDScreen:
+    name:"selection"
+    MDBoxLayout:
+        orientation: "vertical"
+        MDRaisedButton:
+            text: "Student"
+            on_press:
+                root.manager.current = "student registration"
+        MDRaisedButton:
+            text: "Admin"
+            on_press:
+                root.manager.current = "admin registration"

@@ -1,0 +1,252 @@
+
+MDScreen:
+    name: "pohome"
+    #md_bg_color: rgba(95, 176, 179, 255)
+    MDFloatLayout:
+        MDTopAppBar:
+            md_bg_color: rgba(95, 176, 179, 255)
+            pos_hint: {"center_x":0.5,"center_y":0.04}
+        MDIconButton:
+            icon: "home"
+            pos_hint: {"center_x":0.15,"center_y":0.05}
+            theme_icon_color : "Custom"
+            icon_color: rgba(255, 255, 255, 255)
+            on_press:
+                root.manager.current = 'pohome'
+                root.manager.transition.direction = "left"
+        MDIconButton:
+            icon: "bell"
+            pos_hint: {"center_x":0.4,"center_y":0.05}
+            theme_icon_color : "Custom"
+            icon_color: rgba(255, 255, 255, 255)
+            on_press:
+                root.manager.current = 'ponotice'
+                root.manager.transition.direction = "left"
+        MDIconButton:
+            icon: "plus"
+            pos_hint: {"center_x":0.65,"center_y":0.05}
+            theme_icon_color : "Custom"
+            icon_color: rgba(255, 255, 255, 255)
+            on_press:
+                app.update_date_of_add_notice()
+        MDIconButton:
+            icon: "account"
+            pos_hint: {"center_x":0.852,"center_y":0.05}
+            theme_icon_color : "Custom"
+            icon_color: rgba(255, 255, 255, 255)
+            on_release:
+                app.shw_image_po()
+                app.display_data3()
+                root.manager.current = 'poprofile'
+                root.manager.transition.direction = "left"
+        MDTopAppBar:
+            md_bg_color: rgba(95, 176, 179, 255)
+            pos_hint: {"center_x":0.5,"center_y":0.95}
+        MDLabel:
+            text: "Placement Cell"
+            font_name: "DPoppins"
+            font_size: "25sp"
+            pos_hint: {"center_x":0.7,"center_y":0.94}
+            theme_text_color: "Custom"
+            text_color: rgba(222, 254, 237,255)
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: "50dp"
+        spacing: "20dp"
+        pos_hint: {"center_x":0.5,"center_y":0.5}
+        BoxLayout:
+            size_hint_y: None
+            height: "50dp"
+
+        BoxLayout:
+            size_hint: None, None
+            size: "300dp", "400dp"
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            padding: "20dp"
+            spacing: "20dp"
+
+            MDCard:
+                pos_hint: {"center_x":0.5,"center_y":1}
+                size_hint: None, None
+                size: "120dp", "120dp"
+                #elevation: 10
+                md_bg_color: rgba(95, 176, 179, 255)
+                on_release:
+                    app.on_click_showstudetailstopo()
+                MDFloatLayout:
+
+                    Image:
+                        source: "studentdetails.png"
+                        pos_hint: {"center_x":0.5,"center_y":0.65}
+                        size_hint:0.9,0.9
+                        pos_hint: {"center_x":0.5,"center_y":0.6}
+
+                    MDLabel:
+                        text: "Student Details"
+                        font_name: "MPoppins"
+                        halign: "center"
+                        theme_text_color: "Custom"
+                        text_color : rgba(255,255,255,255)
+                        font_size: "15dp"
+                        pos_hint: {"center_x":0.5,"center_y":0.165}
+
+
+
+            MDCard:
+                pos_hint: {"center_x":0.5,"center_y":1}
+                size_hint: None, None
+                size: "120dp", "120dp"
+                #elevation: 10
+                md_bg_color: rgba(95, 176, 179, 255)
+                on_release:
+                    app.on_click_showcompany_list_topo()
+                MDFloatLayout:
+
+                    Image:
+                        source: "comaonydetails.png"
+                        pos_hint: {"center_x":0.5,"center_y":0.65}
+                        size_hint:0.9,0.9
+                        pos_hint: {"center_x":0.5,"center_y":0.6}
+                    MDLabel:
+                        text: "Company\nDetails"
+                        font_name: "MPoppins"
+                        halign: "center"
+                        theme_text_color: "Custom"
+                        text_color : rgba(255,255,255,255)
+                        font_size: "13dp"
+                        pos_hint: {"center_x":0.5,"center_y":0.17}
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: "50dp"
+        spacing: "20dp"
+        pos_hint: {"center_x":0.5,"center_y":0.25}
+        BoxLayout:
+            size_hint_y: None
+            height: "50dp"
+
+        BoxLayout:
+            size_hint: None, None
+            size: "300dp", "400dp"
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            padding: "20dp"
+            spacing: "20dp"
+
+            MDCard:
+                pos_hint: {"center_x":0.5,"center_y":1}
+                size_hint: None, None
+                size: "120dp", "120dp"
+                #elevation: 10
+                md_bg_color: rgba(95, 176, 179, 255)
+                on_release:
+                    app.on_click_showjoblisttopo()
+                MDFloatLayout:
+
+                    Image:
+                        source: "providedjobs.png"
+                        pos_hint: {"center_x":0.5,"center_y":0.65}
+                        size_hint:0.9,0.9
+                        pos_hint: {"center_x":0.5,"center_y":0.6}
+                    MDLabel:
+                        text: "Provided Jobs"
+                        font_name: "MPoppins"
+                        halign: "center"
+                        theme_text_color: "Custom"
+                        text_color : rgba(255,255,255,255)
+                        pos_hint: {"center_x":0.5,"center_y":0.165}
+                        font_size:"13dp"
+
+
+            MDCard:
+                pos_hint: {"center_x":0.5,"center_y":1}
+                size_hint: None, None
+                size: "120dp", "120dp"
+                #elevation: 10
+                md_bg_color: rgba(95, 176, 179, 255)
+                on_release:
+                    app.on_click_showshoortlistedstudentlisttopo()
+                MDFloatLayout:
+
+                    Image:
+                        source: "shortlistedstudents.png"
+                        pos_hint: {"center_x":0.5,"center_y":0.65}
+                        size_hint:0.65,0.6
+                        pos_hint: {"center_x":0.5,"center_y":0.6}
+                    MDLabel:
+                        text: "Shortlisted Students"
+                        font_name: "MPoppins"
+                        halign: "center"
+                        theme_text_color: "Custom"
+                        text_color : rgba(255,255,255,255)
+                        pos_hint: {"center_x":0.5,"center_y":0.17}
+                        font_size:"13dp"
+    BoxLayout:
+        orientation: 'vertical'
+        padding: "50dp"
+        spacing: "20dp"
+        pos_hint: {"center_x":0.5,"center_y":0.015}
+        BoxLayout:
+            size_hint_y: None
+            height: "50dp"
+
+        BoxLayout:
+            size_hint: None, None
+            size: "300dp", "400dp"
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            padding: "20dp"
+            spacing: "20dp"
+
+            MDCard:
+                pos_hint: {"center_x":0.5,"center_y":1}
+                size_hint: None, None
+                size: "120dp", "120dp"
+                #elevation: 10
+                md_bg_color: rgba(95, 176, 179, 255)
+                on_release:
+                    app.on_click_showappliedjoblisttopo()
+                MDFloatLayout:
+
+                    Image:
+                        source: "appliedjobs.png"
+                        pos_hint: {"center_x":0.5,"center_y":0.65}
+                        size_hint:0.8,0.8
+                        pos_hint: {"center_x":0.5,"center_y":0.6}
+
+                    MDLabel:
+                        text: "Applied Jobs"
+                        font_name: "MPoppins"
+                        halign: "center"
+                        theme_text_color: "Custom"
+                        text_color : rgba(255,255,255,255)
+                        font_size: "15dp"
+                        pos_hint: {"center_x":0.5,"center_y":0.2}
+
+
+
+            MDCard:
+                pos_hint: {"center_x":0.5,"center_y":1}
+                size_hint: None, None
+                size: "120dp", "120dp"
+                md_bg_color: rgba(95, 176, 179, 255)
+                on_release:
+                    app.on_click_shownoticelisttopo()
+                MDFloatLayout:
+
+                    Image:
+                        source: "updateprofile.png"
+                        pos_hint: {"center_x":0.5,"center_y":0.65}
+                        size_hint:0.9,0.9
+                        pos_hint: {"center_x":0.5,"center_y":0.6}
+
+                    MDLabel:
+                        text: "View Notice"
+                        font_name: "MPoppins"
+                        halign: "center"
+                        theme_text_color: "Custom"
+                        text_color : rgba(255,255,255,255)
+                        font_size: "15dp"
+                        pos_hint: {"center_x":0.5,"center_y":0.2}
+
+
+

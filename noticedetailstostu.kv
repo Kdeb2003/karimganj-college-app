@@ -1,0 +1,66 @@
+MDScreen:
+    name: "noticedetailstostu"
+    MDFloatLayout:
+        MDTopAppBar:
+            md_bg_color: rgba(95, 176, 179, 255)
+            pos_hint: {"center_x":0.5,"center_y":0.95}
+            size_hint_y: 0.15
+        MDLabel:
+            text: "Karimganj College"
+            font_name: "DPoppins"
+            font_size: "17sp"
+            pos_hint: {"center_x":0.75,"center_y":0.97}
+            theme_text_color: "Custom"
+            text_color: rgba(222, 254, 237,255)
+        MDLabel:
+            text: "Placement Cell"
+            font_name: "DPoppins"
+            font_size: "17sp"
+            pos_hint: {"center_x":0.78,"center_y":0.92}
+            theme_text_color: "Custom"
+            text_color: rgba(222, 254, 237,255)
+        MDIconButton:
+            icon : "chevron-left"
+            pos_hint : {"center_x" :0.07, "center_y" :0.95}
+            icon_size: "30sp"
+            theme_text_color: "Custom"
+            text_color : rgba(222, 254, 237,255)
+            on_release:
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'notification'
+        MDLabel:
+            text: "Notice"
+            font_name: "DPoppins"
+            font_size: "25sp"
+            pos_hint: {"center_x":0.86,"center_y":0.82}
+            #theme_text_color: "Custom"
+            #text_color: rgba(222, 254, 237,255)
+
+        MDCard:
+            pos_hint: {"center_x":0.5,"center_y":0.45}
+            size_hint_x: 0.9
+            size_hint_y: 0.65
+            elevation: 2
+        MDLabel:
+            id: dateofnotice
+            text: "2024-07-15"
+            font_name: "DPoppins"
+            font_size: "15sp"
+            pos_hint: {"center_x":0.84,"center_y":0.74}
+            #theme_text_color: "Custom"
+            #text_color: rgba(222, 254, 237,255)
+        MDBoxLayout:
+            pos_hint: {"center_x":0.5,"center_y":0.5}
+            size_hint_x: 0.85
+            size_hint_y: None
+            padding: 5
+            MDLabel:
+                id: notice
+                text: ""
+                pos_hint:{"center_x":0.5,"center_y":0.5}
+                font_size: "12sp"
+        MDRaisedButton:
+            text: "Download PDF"
+            pos_hint: {"center_x":0.5,"center_y":0.06}
+            size_hint_x: 0.8
+            size_hint_y: 0.075

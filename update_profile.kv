@@ -1,0 +1,206 @@
+MDScreen:
+    name: "updateprofile"
+    MDFloatLayout:
+        MDIconButton:
+            icon : "chevron-left"
+            pos_hint : {"center_y" :0.95}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color : rgba(26, 24, 58, 255)
+            on_release:
+                root.manager.transition.direction = 'right'
+                app.display_data()
+
+        BoxLayout:
+            size_hint: (1, 1)
+            padding : 35
+
+            ScrollView:
+                bar_color: [0, 0, 255, 1]
+                bar_width: 2
+                BoxLayout:
+
+                    spacing: 30
+                    #size: (self.parent.width, self.parent.height)
+                    #size: (self.parent.width, self.parent.height-1)
+                    id: container
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: self.minimum_height
+                    MDLabel:
+                        size_hint: (1,None)
+                        pos_hint :{"center_x": 0.71, "center_y": 0.5}
+                        color: rgba(95, 176, 179, 255)
+                        markup: True
+                        text: "[b]Update Profile[/b]"
+                        markup: True
+                        font_size: "25sp"
+                    MDTextField:
+                        id: user_id
+                        markup: True
+                        hint_text : "User ID"
+                        helper_text: "Shown in Description page"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+
+                    MDTextField:
+                        id: full_name
+                        markup: True
+                        hint_text : "Full Name"
+                        helper_text: "Shown in Description page"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+
+                    MDTextField:
+                        id: email_id
+                        markup: True
+                        hint_text : "Email ID"
+                        helper_text: "Shown in Description page"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+
+                    MDTextField:
+                        id: phone_no
+                        markup: True
+                        hint_text : "Phone No"
+                        helper_text: "Shown in Description page"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+
+                    MDTextField:
+                        id: address
+                        markup: True
+                        hint_text : "Address"
+                        helper_text: "Shown in Description page"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+
+                    MDTextField:
+                        id: department
+                        markup: True
+                        hint_text : "Department"
+                        helper_text: "Shown in Description page"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+                    MDTextField:
+                        id : dob
+                        markup: True
+                        hint_text : "Date of Birth"
+                        helper_text: "Shown in Description page"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+                    MDTextField:
+                        id : password
+                        markup: True
+                        hint_text : "Password"
+                        helper_text: "Shown in Description page"
+                        helper_text_mode: "persistent"
+                        mode : "rectangle"
+                        size_hint : (1, None)
+                        height : 300
+                        line_color_normal: 95/255, 176/255, 179/255, 1
+                        line_color_focus: 95/255, 176/255, 179/255, 1
+                        text_color_normal: 95/255, 176/255, 179/255, 1
+                        text_color_focus: 95/255, 176/255, 179/255, 1
+                        cursor_color: 95/255, 176/255, 179/255, 1
+                        foreground_color: 95/255, 176/255, 179/255, 1
+                        hint_text_color_normal: 95/255, 176/255, 179/255, 1
+                        hint_text_color_focus: 95/255, 176/255, 179/255, 1
+                    MDLabel:
+                        text: ""
+                    MDLabel:
+                        text: ""
+                    MDLabel:
+                        text: ""
+        MDFloatLayout:
+            size_hint: None, None
+            size: dp(200), dp(60)
+            pos_hint: {"center_x":0.5,"center_y":0.08}
+            canvas.before:
+                Color:
+                    rgba: (205/255, 242/255, 225/255, 200/255)  # Background color
+                    #rgba: (255/255, 255/255, 255/255, 150/255)  # Background color
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius : [15,15,15,15]
+        MDTextButton:
+            text: "UPDATE"
+            pos_hint: {"center_x":0.8,"center_y":0.08}
+            size_hint_x: 0.8
+            size_hint_y: 0.05
+            font_size: "17dp"
+            bold : True
+            on_release:
+                app.updateprofile(user_id.text, full_name.text, email_id.text, phone_no.text, address.text, department.text, dob.text, password.text)
+                root.manager.transition.direction = "right"

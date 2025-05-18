@@ -1,0 +1,75 @@
+MDScreen:
+    name: "signupteacher"
+    MDFloatLayout:
+        #md_bg_color: 186/255, 255/255, 255/255,1
+        md_bg_color: 1,1,1,1
+        MDIconButton:
+            icon : "arrow-left"
+            pos_hint : {"center_y" :0.95}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color : rgba(26, 24, 58, 255)
+            on_release:
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'selection'
+
+        MDLabel:
+            text: "REGISTER"
+            pos_hint: {"center_x": 0.35, "center_y":0.9}
+            font_size: "25sp"
+            halign : "center"
+            size_hint_y: None
+            height: self.texture_size[1]
+            color: rgba(0,0,72, 255)
+
+        MDFloatLayout:
+            md_bg_color: rgba(0,0,0,255)
+            size_hint : 0.75, 0.002
+            pos_hint: {"center_x" :0.5, "center_y": 0.88}
+
+        MDTextField:
+            hint_text : "Full name"
+            helper_text: "Necessary*"
+            helper_text_mode: "persistent"
+            mode : "round"
+            size_hint : 0.7, 0.075
+            pos_hint :  {"center_x": 0.5,"center_y":0.78}
+            color_active : [1,1,1,1]
+
+
+        MDTextField:
+            hint_text: "Email ID"
+            mode: "round"
+            helper_text: "xyz@gmail.com"
+            helper_text_mode: "persistent"
+            size_hint : 0.7, 0.075
+            pos_hint :  {"center_x": 0.5,"center_y":0.66}
+            color_active: [1,1,1,1]
+
+        MDTextField:
+            hint_text: "Phone number"
+            mode: "round"
+            helper_text: "Enter a valid phone number"
+            helper_text_mode: "persistent"
+            size_hint : 0.7, 0.075
+            max_text_length: 10
+            pos_hint :  {"center_x": 0.5,"center_y":0.54}
+            color_active: [1,1,1,1]
+
+        MDTextField:
+            hint_text: "Department"
+            mode: "round"
+            helper_text: "Eg: Computer Science"
+            helper_text_mode: "persistent"
+            size_hint : 0.7, 0.075
+            pos_hint :  {"center_x": 0.5,"center_y":0.42}
+            color_active: [1,1,1,1]
+
+
+        MDFillRoundFlatButton:
+            text: "SUBMIT"
+            size_hint: 0.3,0.05
+            pos_hint : {"center_x":0.5,"center_y":0.2}
+            font_name: "MPoppins"
+
+

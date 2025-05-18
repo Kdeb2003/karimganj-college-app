@@ -1,0 +1,47 @@
+
+                    MDLabel:
+                        id: noticefrompo
+                        text: " No Notice yet \n delivered from Placement Officer"
+                        theme_text_color: "Primary"
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        #padding: "10dp"
+                        font_style: "Body1"
+    def on_click_showlist(self):
+        self.cursor.execute("select job_code,job_title,company_name from job_details")
+        row = self.cursor.fetchall()
+        job_list = self.root.get_screen('job').ids.lula_list
+        job_list.clear_widgets()
+        for i in row:
+            item = ThreeLineListItem(text = i[1], secondary_text = str(i[0]),tertiary_text = str(i[2]))
+            item.bind(on_release= self.show_details_ofjob)
+            job_list.add_widget(item)
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+MDScreen:
+    name: "viewjobtopo"
+    MDLabel:
+        id: job_id
+        text: " "
+        pos_hint:{"center_x":0.9,"center_y":0.8}
+    MDLabel:
+        id: job_title
+        text: " "
+        pos_hint:{"center_x":0.9,"center_y":0.7}
+    MDLabel:
+        id: company_id
+        text: " "
+        pos_hint:{"center_x":0.9,"center_y":0.6}
+    MDLabel:
+        id: Providing_Date
+        text: " "
+        pos_hint:{"center_x":0.9,"center_y":0.5}
+    MDLabel:
+        id: Last_date
+        text: " "
+        pos_hint:{"center_x":0.9,"center_y":0.4}
+
+    MDLabel:
+        id: Salary
+        text: " "
+        pos_hint:{"center_x":0.9,"center_y":0.3}
