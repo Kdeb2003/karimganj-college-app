@@ -1,0 +1,35 @@
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+.secrets/
+*.secret
+*.secrets
+*.local
+
+# IDE metadata
+.idea/
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Build and packaging output
+build/
+dist/
+bin/
+.buildozer/
+
+# Runtime-generated/private files
+/downloaded_*.pdf
+/temp*.jpg
+/studentimage.jpg
+/adminimage.jpg
+/placementimage.jpg
+
+# OS metadata
+.DS_Store
+Thumbs.db

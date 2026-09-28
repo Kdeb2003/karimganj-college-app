@@ -1,49 +1,67 @@
 import datetime
 import os
+import re
+import smtplib
 import traceback
-from datetime import date
+from email.message import EmailMessage
 from io import BytesIO
 
 from PIL import Image
-from kivy.app import App
 from kivy.atlas import CoreImage
 from kivy.clock import Clock
+from kivy.core.text import LabelBase
+from kivy.core.window import Window
+from kivy.lang.builder import Builder
 from kivy.properties import ListProperty, NumericProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.filechooser import FileChooserListView
 from kivy.uix.modalview import ModalView
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.uix.screenmanager import Screen
 from kivymd.app import MDApp
+from kivymd.uix.behaviors import FakeRectangularElevationBehavior
+from kivymd.uix.button import MDRectangleFlatButton, MDFillRoundFlatButton, MDRaisedButton, MDIconButton
+from kivymd.uix.dialog import MDDialog
 from kivymd.uix.filemanager import MDFileManager
+from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.label import MDLabel
 from kivymd.uix.list import TwoLineListItem, ThreeLineListItem, OneLineListItem, ThreeLineAvatarIconListItem, \
     IconRightWidget
 from kivymd.uix.screenmanager import ScreenManager
-from kivy.lang.builder import Builder
-from kivy.core.text import LabelBase
-from kivy.core.window import Window
-from kivymd.uix.dialog import MDDialog
-from kivymd.uix.button import MDRectangleFlatButton, MDFillRoundFlatButton, MDRaisedButton, MDIconButton
-from kivymd.uix.behaviors import FakeRectangularElevationBehavior
-from kivymd.uix.floatlayout import MDFloatLayout
-import mysql.connector
-import re
-import smtplib
-from email.message import EmailMessage
-import random
-from threading import Thread
-from kivy.lang import Builder
-from kivymd.app import MDApp
-from kivymd.uix.screen import Screen
-from kivymd.uix.button import MDRectangleFlatButton
 from kivymd.uix.snackbar import Snackbar
 from kivymd.uix.textfield import MDTextField
-from kivymd.uix.dialog import MDDialog
-from kivymd.uix.label import MDLabel
-from kivy.clock import Clock
-from kivymd.uix.card import MDCard
+
+import mysql.connector
+
+from auth_security import OTPChallenge, OTPStatus, hash_password, verify_and_upgrade_password
+
+
+DATABASE_CONFIG = {
+    "host": os.getenv("KARIMGANJ_DB_HOST", "localhost"),
+    "user": os.getenv("KARIMGANJ_DB_USER", "root"),
+    "password": os.getenv("KARIMGANJ_DB_PASSWORD"),
+    "database": os.getenv("KARIMGANJ_DB_NAME", "karimganjcollege"),
+}
+SMTP_EMAIL = os.getenv("KARIMGANJ_SMTP_EMAIL")
+SMTP_PASSWORD = os.getenv("KARIMGANJ_SMTP_PASSWORD")
+OTP_EXPIRY_SECONDS = 300
+OTP_MAX_ATTEMPTS = 3
+
+LEGACY_PASSWORD_UPDATE_QUERIES = {
+    "student": "UPDATE signupstudent SET password = %s WHERE email_id = %s",
+    "admin": "UPDATE signupadmin SET password = %s WHERE email_id = %s",
+    "company": "UPDATE company_details SET password = %s WHERE company_emailid = %s",
+    "placement_officer": "UPDATE placementofficer SET password = %s WHERE email_id = %s",
+}
+
+PASSWORD_RESET_ACCOUNT_QUERIES = (
+    ("student", "SELECT email_id FROM signupstudent WHERE email_id = %s"),
+    ("admin", "SELECT email_id FROM signupadmin WHERE email_id = %s"),
+    ("company", "SELECT company_emailid FROM company_details WHERE company_emailid = %s"),
+    ("placement_officer", "SELECT email_id FROM placementofficer WHERE email_id = %s"),
+)
+
+
 Window.size = (310, 580)
 
 
@@ -51,6 +69,11 @@ Window.size = (310, 580)
 class Karimganj_College(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.file_path = None
+        self.otp_challenge = None
+        self.password_reset_email = None
+        self.password_reset_account_type = None
+        self.password_reset_authorized = False
         self.file_manager = MDFileManager(
             exit_manager=self.exit_file_manager,
             select_path=self.select_path,
@@ -83,29 +106,9 @@ class Karimganj_College(MDApp):
             ext=[".pdf"]
         )
     dialog = None
-    database = mysql.connector.Connect(host="localhost", user="root", password="Kushal@2003",
-                                        database="karimganjcollege",)
-    #database = mysql.connector.connect(user="sql12643515",host="sql12.freesqldatabase.com",password="gSpCSP2vBZ",database="sql12643515")
+    database = mysql.connector.Connect(**DATABASE_CONFIG)
     regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
     cursor = database.cursor()
-    cursor.execute("select * from signupstudent")
-    for i in cursor.fetchall():
-        print(i[0], i[1], i[2], i[3],i[4],i[5],i[6],i[7])
-    #cursor.execute("select * from signupadmin")
-    #for i in cursor.fetchall():
-    #    print(i[0], i[1], i[2], i[3],i[4],i[5])
-    #cursor.execute("select * from company_details")
-    #for i in cursor.fetchall():
-    #    print(i[0], i[1], i[2], i[3],i[4],i[5])
-    #cursor.execute("select * from placementofficer")
-    #for i in cursor.fetchall():
-    #    print(i[0], i[1], i[2], i[3],i[4],i[5],i[6])
-    #cursor.execute("select * from job_details")
-    #for i in cursor.fetchall():
-    #    print(i[0], i[1], i[2], i[3],i[4],i[5],i[6],i[7])
-    #cursor.execute("select * from applied_jobs")
-    #for i in cursor.fetchall():
-    #    print(i[0], i[1], i[2], i[3],i[4],i[5],i[6])
     KV_FILES = {
         os.path.join(os.getcwd(),"home.kv"),
         os.path.join(os.getcwd(), "tinni2.kv"),
@@ -119,7 +122,7 @@ class Karimganj_College(MDApp):
 
     def build(self):
         self.theme_cls.primary_palette = 'BlueGray'
-        self.timer = 300
+        self.timer = OTP_EXPIRY_SECONDS
         global img
         global screen_manager
 
@@ -201,6 +204,88 @@ class Karimganj_College(MDApp):
     def show_snackbar(self, text):
         Snackbar(text=text).open()
 
+    def _verify_and_migrate_password(self, account_type, email, candidate, stored_value):
+        """Verify a password and replace matching legacy plaintext immediately."""
+        verified, replacement_hash = verify_and_upgrade_password(candidate, stored_value)
+        if verified and replacement_hash is not None:
+            self.cursor.execute(
+                LEGACY_PASSWORD_UPDATE_QUERIES[account_type],
+                (replacement_hash, email),
+            )
+            self.database.commit()
+        return verified
+
+    def _unschedule_otp_timers(self):
+        for callback in (
+            self.update_timer,
+            self.update_timer1,
+            self.update_timer2,
+            self.update_timer3,
+            self.update_timer7,
+        ):
+            Clock.unschedule(callback)
+
+    def _clear_otp_challenge(self):
+        self._unschedule_otp_timers()
+        if self.otp_challenge is not None:
+            self.otp_challenge.clear()
+        self.otp_challenge = None
+        self.timer = 0
+
+    def _create_otp_challenge(self):
+        self._clear_otp_challenge()
+        self.otp_challenge, otp_code = OTPChallenge.create(
+            expires_in_seconds=OTP_EXPIRY_SECONDS,
+            max_attempts=OTP_MAX_ATTEMPTS,
+        )
+        self.timer = OTP_EXPIRY_SECONDS
+        return otp_code
+
+    def _verify_current_otp(self, candidate):
+        if self.otp_challenge is None:
+            return OTPStatus.EXPIRED
+        status = self.otp_challenge.verify(candidate)
+        if status in (
+            OTPStatus.SUCCESS,
+            OTPStatus.EXPIRED,
+            OTPStatus.ATTEMPTS_EXCEEDED,
+        ):
+            self._clear_otp_challenge()
+        return status
+
+    def _update_otp_countdown(self, timer_label, show_expired_dialog):
+        if self.otp_challenge is None:
+            return
+        self.timer = self.otp_challenge.seconds_remaining()
+        if self.timer <= 0:
+            self._clear_otp_challenge()
+            show_expired_dialog()
+        else:
+            timer_label.text = f"Time Left: {self.timer} seconds"
+
+    def _find_password_reset_account(self, email):
+        for account_type, query in PASSWORD_RESET_ACCOUNT_QUERIES:
+            self.cursor.execute(query, (email,))
+            if self.cursor.fetchone() is not None:
+                return account_type
+        return None
+
+    def _clear_password_reset_state(self, *, clear_challenge=True):
+        if clear_challenge:
+            self._clear_otp_challenge()
+        self.password_reset_email = None
+        self.password_reset_account_type = None
+        self.password_reset_authorized = False
+
+    def cancel_password_reset(self):
+        self._clear_password_reset_state()
+
+    def _handle_password_reset_expiry(self):
+        self._clear_password_reset_state(clear_challenge=False)
+        if hasattr(self, "dialog7"):
+            self.dialog7.dismiss()
+        self.show_otp_expired_dialog7()
+
     def on_click_shownoticelisttopo(self):
         screen_manager.current = "viewnotice"
         self.cursor.execute("select noticeid,noticedate,notice from notice")
@@ -232,7 +317,6 @@ class Karimganj_College(MDApp):
                 (poid,)
             )
             self.database.commit()
-            self.database.close()
             self.show_snackbar("PO removed successfully.")
             screen_manager.current= "adminhome"
         except Exception as e:
@@ -257,9 +341,13 @@ class Karimganj_College(MDApp):
             notice_list.add_widget(item100)
     def check_email_exists(self, email):
         try:
-            tables = ['signupstudent', 'company_details', 'placementofficer', 'signupadmin']
-            for table in tables:
-                query = f"SELECT email_id FROM {table} WHERE email_id = %s"
+            email_queries = (
+                "SELECT email_id FROM signupstudent WHERE email_id = %s",
+                "SELECT company_emailid FROM company_details WHERE company_emailid = %s",
+                "SELECT email_id FROM placementofficer WHERE email_id = %s",
+                "SELECT email_id FROM signupadmin WHERE email_id = %s",
+            )
+            for query in email_queries:
                 self.cursor.execute(query, (email,))
                 result = self.cursor.fetchone()
                 if result is not None:
@@ -274,8 +362,18 @@ class Karimganj_College(MDApp):
             if re.fullmatch(self.regex, email_id.text):
                 if not self.check_email_exists(email_id.text):
                     self.cursor.execute(
-                        f"INSERT INTO signupstudent VALUES ('{user_id.text}', '{full_name.text}', '{email_id.text}',"
-                        f"'{phone_no.text}', '{address.text}', '{department.text}', '{password.text}', '{dob.text}','{yearofjoining.text}')"
+                        "INSERT INTO signupstudent VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                        (
+                            user_id.text,
+                            full_name.text,
+                            email_id.text,
+                            phone_no.text,
+                            address.text,
+                            department.text,
+                            hash_password(password.text),
+                            dob.text,
+                            yearofjoining.text,
+                        ),
                     )
                     self.database.commit()
                     email_id.text = " "
@@ -295,8 +393,15 @@ class Karimganj_College(MDApp):
             if re.fullmatch(self.regex, email_id.text):
                 if not self.check_email_exists(email_id.text):
                     self.cursor.execute(
-                        f"INSERT INTO signupadmin VALUES ('{user_id.text}', '{full_name.text}', '{email_id.text}',"
-                        f"'{phone_no.text}', '{address.text}', '{password.text}')"
+                        "INSERT INTO signupadmin VALUES (%s, %s, %s, %s, %s, %s)",
+                        (
+                            user_id.text,
+                            full_name.text,
+                            email_id.text,
+                            phone_no.text,
+                            address.text,
+                            hash_password(password.text),
+                        ),
                     )
                     self.database.commit()
                     email_id.text = " "
@@ -317,7 +422,16 @@ class Karimganj_College(MDApp):
             if not self.check_email_exists(email_id.text):
                 try:
                     self.cursor.execute(
-                        f"insert into company_details values('{company_id.text}', '{company_name.text}', '{email_id.text}','{phone_no.text}','{address.text}','{password.text}' )")
+                        "INSERT INTO company_details VALUES (%s, %s, %s, %s, %s, %s)",
+                        (
+                            company_id.text,
+                            company_name.text,
+                            email_id.text,
+                            phone_no.text,
+                            address.text,
+                            hash_password(password.text),
+                        ),
+                    )
                     self.database.commit()
                     email_id.text = " "
                     password.text = " "
@@ -333,7 +447,17 @@ class Karimganj_College(MDApp):
             if not self.check_email_exists(email_id.text):
                 try:
                     self.cursor.execute(
-                        f"insert into placementofficer values('{po_id.text}', '{po_name.text}', '{email_id.text}','{phone_no.text}','{department.text}','{address.text}','{password.text}' )")
+                        "INSERT INTO placementofficer VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                        (
+                            po_id.text,
+                            po_name.text,
+                            email_id.text,
+                            phone_no.text,
+                            department.text,
+                            address.text,
+                            hash_password(password.text),
+                        ),
+                    )
                     self.database.commit()
                     email_id.text = " "
                     password.text = " "
@@ -435,9 +559,17 @@ class Karimganj_College(MDApp):
                    jobdescriptionprovide, salaryprovideid, dateofprovidingjob, lastdateofapplying):
         try:
             self.cursor.execute(
-                f"INSERT INTO job_details VALUES ('{jobcodeprovideid.text}', '{jobtitleprovideid.text}', "
-                f"'{jobdescriptionprovide.text}', '{companynameprovideid.text}', '{companyidprovide.text}', "
-                f"'{dateofprovidingjob.text}', '{lastdateofapplying.text}', '{salaryprovideid.text}')"
+                "INSERT INTO job_details VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                (
+                    jobcodeprovideid.text,
+                    jobtitleprovideid.text,
+                    jobdescriptionprovide.text,
+                    companynameprovideid.text,
+                    companyidprovide.text,
+                    dateofprovidingjob.text,
+                    lastdateofapplying.text,
+                    salaryprovideid.text,
+                ),
             )
             self.database.commit()
             det = screen_manager.get_screen("addjob")
@@ -471,9 +603,6 @@ class Karimganj_College(MDApp):
 
     # Replace self.show_snackbar with the appropriate method you're using to display snackbars in your application.
 
-    import datetime
-    import traceback
-
     def shortlist(self):
         try:
             det = screen_manager.get_screen('studentdetailsthathaveappliedjobs')
@@ -488,8 +617,11 @@ class Karimganj_College(MDApp):
             a = "shortlisted"
 
             # Check the 'shortlisted_ornot' status
-            shortlisted_query = f"SELECT shortlisted_ornot FROM shortlisted_students WHERE user_id = '{userid}' AND job_id = '{jobcode}'"
-            self.cursor.execute(shortlisted_query)
+            shortlisted_query = (
+                "SELECT shortlisted_ornot FROM shortlisted_students "
+                "WHERE user_id = %s AND job_id = %s"
+            )
+            self.cursor.execute(shortlisted_query, (userid, jobcode))
             shortlisted_record = self.cursor.fetchone()
 
             if shortlisted_record and shortlisted_record[0] == "rejected":
@@ -563,8 +695,11 @@ class Karimganj_College(MDApp):
 
         try:
             # Check if the student is already shortlisted
-            shortlisted_query = f"SELECT shortlisted_ornot FROM shortlisted_students WHERE user_id = '{userid}' AND job_id = '{jobcode}'"
-            self.cursor.execute(shortlisted_query)
+            shortlisted_query = (
+                "SELECT shortlisted_ornot FROM shortlisted_students "
+                "WHERE user_id = %s AND job_id = %s"
+            )
+            self.cursor.execute(shortlisted_query, (userid, jobcode))
             shortlisted_record = self.cursor.fetchone()
 
             if shortlisted_record and shortlisted_record[0] == "shortlisted":
@@ -604,7 +739,7 @@ class Karimganj_College(MDApp):
                         "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                         (job_code, job_title, student_name, email_id, phone_no, why_applying, why_hire, com_name)
                     )
-                delete_query = f"DELETE FROM applied_jobs WHERE email_id = %s"
+                delete_query = "DELETE FROM applied_jobs WHERE email_id = %s"
                 self.cursor.execute(delete_query, (student_email,))
                 self.database.commit()
                 self.show_snackbar("Student rejected successfully.")
@@ -631,9 +766,14 @@ class Karimganj_College(MDApp):
         for i in self.cursor.fetchall():
             email_list4.append(i[2])
         if email_id.text in email_list1 and email_id.text != " ":
-            self.cursor.execute(f"select password from signupstudent where email_id= '{email_id.text}'")
-            for j in self.cursor:
-                if password.text == j[0]:
+            self.cursor.execute(
+                "SELECT password FROM signupstudent WHERE email_id = %s",
+                (email_id.text,),
+            )
+            for j in self.cursor.fetchall():
+                if self._verify_and_migrate_password(
+                    "student", email_id.text, password.text, j[0]
+                ):
                     screen_manager.current='home'
                     #app.on_click_shownoticelisttostudent()
                     self.dialog = MDDialog(
@@ -656,9 +796,14 @@ class Karimganj_College(MDApp):
                     self.dialog.open()
                     print("Invalid password")
         elif email_id.text in email_list2 and email_id.text != " ":
-            self.cursor.execute(f"select password from signupadmin where email_id= '{email_id.text}'")
-            for j in self.cursor:
-                if password.text == j[0]:
+            self.cursor.execute(
+                "SELECT password FROM signupadmin WHERE email_id = %s",
+                (email_id.text,),
+            )
+            for j in self.cursor.fetchall():
+                if self._verify_and_migrate_password(
+                    "admin", email_id.text, password.text, j[0]
+                ):
                     screen_manager.current = 'adminhome'
                     self.dialog = MDDialog(
                         title="You have successfully logged in",
@@ -680,9 +825,14 @@ class Karimganj_College(MDApp):
                     self.dialog.open()
                     print("Invalid password")
         elif email_id.text in email_list3 and email_id.text != " ":
-            self.cursor.execute(f"select password from company_details where company_emailid= '{email_id.text}'")
-            for j in self.cursor:
-                if password.text == j[0]:
+            self.cursor.execute(
+                "SELECT password FROM company_details WHERE company_emailid = %s",
+                (email_id.text,),
+            )
+            for j in self.cursor.fetchall():
+                if self._verify_and_migrate_password(
+                    "company", email_id.text, password.text, j[0]
+                ):
                     screen_manager.current = 'companyhome'
                     self.on_click_shownoticelist()
                     self.dialog = MDDialog(
@@ -706,9 +856,14 @@ class Karimganj_College(MDApp):
                     self.dialog.open()
                     print("Invalid password")
         elif email_id.text in email_list4 and email_id.text != " ":
-            self.cursor.execute(f"select password from placementofficer where email_id= '{email_id.text}'")
-            for j in self.cursor:
-                if password.text == j[0]:
+            self.cursor.execute(
+                "SELECT password FROM placementofficer WHERE email_id = %s",
+                (email_id.text,),
+            )
+            for j in self.cursor.fetchall():
+                if self._verify_and_migrate_password(
+                    "placement_officer", email_id.text, password.text, j[0]
+                ):
                     screen_manager.current = 'pohome'
                     self.dialog = MDDialog(
                         title="You have successfully logged in",
@@ -923,12 +1078,7 @@ class Karimganj_College(MDApp):
             item_layout1.add_widget(icon_button)
             job_list.add_widget(item_layout1)
     def show_save_dialog(self, btn, student_email):
-        connection = mysql.connector.connect(
-            host='localhost',
-            database='karimganjcollege',
-            user='root',
-            password='Kushal@2003'
-        )
+        connection = mysql.connector.connect(**DATABASE_CONFIG)
         cursor = connection.cursor()
 
         try:
@@ -968,12 +1118,7 @@ class Karimganj_College(MDApp):
         #     with open("downloaded_pdf.pdf", "wb") as pdf_file:
         #         pdf_file.write(pdf_data)
         #     self.show_snackbar("PDF Downloaded")
-        connection = mysql.connector.connect(
-            host='localhost',
-            database='karimganjcollege',
-            user='root',
-            password='Kushal@2003'
-        )
+        connection = mysql.connector.connect(**DATABASE_CONFIG)
         cursor = connection.cursor()
 
         try:
@@ -1044,7 +1189,7 @@ class Karimganj_College(MDApp):
             dts_scr.ids.phone_no.text = str(row[3])
             dts_scr.ids.address.text = str(row[4])
             dts_scr.ids.department.text = str(row[5])
-            dts_scr.ids.password.text = str(row[6])
+            dts_scr.ids.password.text = ""
             dts_scr.ids.dob.text = str(row[7])
         self.database.commit()
 
@@ -1052,10 +1197,27 @@ class Karimganj_College(MDApp):
 
     def updateprofile(self,user_id,full_name,email_id,phone_no,address,department,dob, password):
         try:
-            self.cursor.execute(
-                "UPDATE signupstudent SET user_id = %s, full_name = %s, email_id = %s, phone_no = %s, address = %s, department = %s, password = %s, dob = %s WHERE email_id = %s",
-                (user_id,full_name,email_id,phone_no,address,department, password, dob, email_id)
-            )
+            if password.strip():
+                self.cursor.execute(
+                    "UPDATE signupstudent SET user_id = %s, full_name = %s, email_id = %s, phone_no = %s, address = %s, department = %s, password = %s, dob = %s WHERE email_id = %s",
+                    (
+                        user_id,
+                        full_name,
+                        email_id,
+                        phone_no,
+                        address,
+                        department,
+                        hash_password(password),
+                        dob,
+                        email_id,
+                    ),
+                )
+            else:
+                self.cursor.execute(
+                    "UPDATE signupstudent SET user_id = %s, full_name = %s, email_id = %s, phone_no = %s, address = %s, department = %s, dob = %s WHERE email_id = %s",
+                    (user_id, full_name, email_id, phone_no, address, department, dob, email_id),
+                )
+            self.database.commit()
             self.cursor.execute("select * from signupstudent where email_id = %s", (email_id,))
             row = self.cursor.fetchone()
             if row:
@@ -1066,7 +1228,7 @@ class Karimganj_College(MDApp):
                 dts_scr.ids.phone_no.text = str(row[3])
                 dts_scr.ids.address.text = str(row[4])
                 dts_scr.ids.department.text = str(row[5])
-                dts_scr.ids.password.text = str(row[6])
+                dts_scr.ids.password.text = ""
                 dts_scr.ids.dob.text = str(row[7])
             self.show_snackbar("Updated Successfully")
         except Exception as e:
@@ -1958,27 +2120,28 @@ class Karimganj_College(MDApp):
             server.login(email, password)
             server.send_message(msg)
             server.quit()
+            return True
 
         except Exception as e:
             print(e)
+            return False
 
     def send_otp(self, *args):
         try:
             det = screen_manager.get_screen('bekkar2')
             recipient = det.ids.email_id.text
 
-            self.email = "test123deb@gmail.com"  # Predefined sender email
-            self.password = "vntyvnwxunxzsobx"  # Predefined sender password
+            self.email = SMTP_EMAIL
+            self.password = SMTP_PASSWORD
 
-            self.otp = str(random.randint(100000, 999999))
-            #print("OTP:", self.otp)
+            otp_code = self._create_otp_challenge()
 
             self.send_email(
                 self.email,
                 self.password,
                 recipient,
                 "OTP Verification",
-                f"Your OTP is: {self.otp}",
+                f"Your OTP is: {otp_code}",
             )
 
             self.show_otp_dialog()
@@ -1998,7 +2161,7 @@ class Karimganj_College(MDApp):
                 height="240dp"
             ),
             buttons=[
-                MDRectangleFlatButton(text="Cancel", on_release=self.close_dialog),
+                MDRectangleFlatButton(text="Cancel", on_release=self.close_dialog1),
                 MDRectangleFlatButton(text="Verify", on_release=self.verify_otp),
             ],
         )
@@ -2032,10 +2195,12 @@ class Karimganj_College(MDApp):
         self.otp_input = value
 
     def close_dialog1(self, *args):
+        self._clear_otp_challenge()
         self.dialog.dismiss()
 
     def verify_otp(self, *args):
-        if self.otp_text.text == self.otp:
+        otp_status = self._verify_current_otp(self.otp_text.text)
+        if otp_status == OTPStatus.SUCCESS:
             self.dialog.dismiss()
             self.verification_status = "OTP Verified!"
             self.show_success_dialog()
@@ -2047,6 +2212,9 @@ class Karimganj_College(MDApp):
                 dts_scr.ids.dob.disabled = False
                 dts_scr.ids.password.disabled =False
 
+        elif otp_status == OTPStatus.EXPIRED:
+            self.dialog.dismiss()
+            self.show_otp_expired_dialog()
         else:
             self.dialog.dismiss()
             self.show_failure_dialog()
@@ -2074,12 +2242,7 @@ class Karimganj_College(MDApp):
         self.failure_dialog.dismiss()
 
     def update_timer(self, dt):
-        self.timer -= 1
-        if self.timer == 0:
-            Clock.unschedule(self.update_timer)
-            self.show_otp_expired_dialog()
-        else:
-            self.timer_label.text = f"Time Left: {self.timer} seconds"
+        self._update_otp_countdown(self.timer_label, self.show_otp_expired_dialog)
 
     def show_otp_expired_dialog(self):
         self.otp_expired_dialog = MDDialog(
@@ -2110,18 +2273,17 @@ class Karimganj_College(MDApp):
             det = screen_manager.get_screen('signupadmin')
             recipient = det.ids.email_id.text
 
-            self.email = "test123deb@gmail.com"  # Predefined sender email
-            self.password = "vntyvnwxunxzsobx"  # Predefined sender password
+            self.email = SMTP_EMAIL
+            self.password = SMTP_PASSWORD
 
-            self.otp = str(random.randint(100000, 999999))
-            #print("OTP:", self.otp)
+            otp_code = self._create_otp_challenge()
 
             self.send_email(
                 self.email,
                 self.password,
                 recipient,
                 "OTP Verification",
-                f"Your OTP is: {self.otp}",
+                f"Your OTP is: {otp_code}",
             )
 
             self.show_otp_dialog1()
@@ -2175,10 +2337,12 @@ class Karimganj_College(MDApp):
         self.otp_input1 = value
 
     def close_dialog2(self, *args):
+        self._clear_otp_challenge()
         self.dialog1.dismiss()
 
     def verify_otp1(self, *args):
-        if self.otp_text1.text == self.otp:
+        otp_status = self._verify_current_otp(self.otp_text1.text)
+        if otp_status == OTPStatus.SUCCESS:
             self.dialog1.dismiss()
             self.verification_status = "OTP Verified!"
             self.show_success_dialog1()
@@ -2188,6 +2352,9 @@ class Karimganj_College(MDApp):
                 dts_scr.ids.address.disabled =False
                 dts_scr.ids.password.disabled =False
 
+        elif otp_status == OTPStatus.EXPIRED:
+            self.dialog1.dismiss()
+            self.show_otp_expired_dialog1()
         else:
             self.dialog1.dismiss()
             self.show_failure_dialog1()
@@ -2215,12 +2382,7 @@ class Karimganj_College(MDApp):
         self.failure_dialog1.dismiss()
 
     def update_timer1(self, dt):
-        self.timer -= 1
-        if self.timer == 0:
-            Clock.unschedule(self.update_timer1)
-            self.show_otp_expired_dialog1()
-        else:
-            self.timer_label1.text = f"Time Left: {self.timer} seconds"
+        self._update_otp_countdown(self.timer_label1, self.show_otp_expired_dialog1)
 
     def show_otp_expired_dialog1(self):
         self.otp_expired_dialog1 = MDDialog(
@@ -2251,18 +2413,17 @@ class Karimganj_College(MDApp):
             det = screen_manager.get_screen('signupother')
             recipient = det.ids.email_id.text
 
-            self.email = "test123deb@gmail.com"  # Predefined sender email
-            self.password = "vntyvnwxunxzsobx"  # Predefined sender password
+            self.email = SMTP_EMAIL
+            self.password = SMTP_PASSWORD
 
-            self.otp = str(random.randint(100000, 999999))
-            #print("OTP:", self.otp)
+            otp_code = self._create_otp_challenge()
 
             self.send_email(
                 self.email,
                 self.password,
                 recipient,
                 "OTP Verification",
-                f"Your OTP is: {self.otp}",
+                f"Your OTP is: {otp_code}",
             )
 
             self.show_otp_dialog2()
@@ -2316,10 +2477,12 @@ class Karimganj_College(MDApp):
         self.otp_input2 = value
 
     def close_dialog3(self, *args):
+        self._clear_otp_challenge()
         self.dialog2.dismiss()
 
     def verify_otp2(self, *args):
-        if self.otp_text2.text == self.otp:
+        otp_status = self._verify_current_otp(self.otp_text2.text)
+        if otp_status == OTPStatus.SUCCESS:
             self.dialog2.dismiss()
             self.verification_status = "OTP Verified!"
             self.show_success_dialog2()
@@ -2330,6 +2493,9 @@ class Karimganj_College(MDApp):
                 dts_scr.ids.address.disabled =False
                 dts_scr.ids.password.disabled =False
 
+        elif otp_status == OTPStatus.EXPIRED:
+            self.dialog2.dismiss()
+            self.show_otp_expired_dialog2()
         else:
             self.dialog2.dismiss()
             self.show_failure_dialog2()
@@ -2357,12 +2523,7 @@ class Karimganj_College(MDApp):
         self.failure_dialog2.dismiss()
 
     def update_timer2(self, dt):
-        self.timer -= 1
-        if self.timer == 0:
-            Clock.unschedule(self.update_timer1)
-            self.show_otp_expired_dialog2()
-        else:
-            self.timer_label2.text = f"Time Left: {self.timer} seconds"
+        self._update_otp_countdown(self.timer_label2, self.show_otp_expired_dialog2)
 
     def show_otp_expired_dialog2(self):
         self.otp_expired_dialog2 = MDDialog(
@@ -2370,7 +2531,7 @@ class Karimganj_College(MDApp):
             text="The OTP has expired.",
             buttons=[
                 MDRectangleFlatButton(
-                    text="Resend OTP", on_release=self.resend_otp_dialog1
+                    text="Resend OTP", on_release=self.resend_otp_dialog2
                 ),
                 MDRectangleFlatButton(text="Cancel", on_release=self.close_otp_expired_dialog2),
             ],
@@ -2393,18 +2554,17 @@ class Karimganj_College(MDApp):
             det = screen_manager.get_screen('signupfacalty')
             recipient = det.ids.email_id.text
 
-            self.email = "test123deb@gmail.com"  # Predefined sender email
-            self.password = "vntyvnwxunxzsobx"  # Predefined sender password
+            self.email = SMTP_EMAIL
+            self.password = SMTP_PASSWORD
 
-            self.otp = str(random.randint(100000, 999999))
-            #print("OTP:", self.otp)
+            otp_code = self._create_otp_challenge()
 
             self.send_email(
                 self.email,
                 self.password,
                 recipient,
                 "OTP Verification",
-                f"Your OTP is: {self.otp}",
+                f"Your OTP is: {otp_code}",
             )
 
             self.show_otp_dialog3()
@@ -2458,10 +2618,12 @@ class Karimganj_College(MDApp):
         self.otp_input3 = value
 
     def close_dialog4(self, *args):
+        self._clear_otp_challenge()
         self.dialog3.dismiss()
 
     def verify_otp3(self, *args):
-        if self.otp_text3.text == self.otp:
+        otp_status = self._verify_current_otp(self.otp_text3.text)
+        if otp_status == OTPStatus.SUCCESS:
             self.dialog3.dismiss()
             self.verification_status = "OTP Verified!"
             self.show_success_dialog3()
@@ -2471,6 +2633,9 @@ class Karimganj_College(MDApp):
                 dts_scr.ids.address.disabled =False
                 dts_scr.ids.password.disabled =False
 
+        elif otp_status == OTPStatus.EXPIRED:
+            self.dialog3.dismiss()
+            self.show_otp_expired_dialog3()
         else:
             self.dialog3.dismiss()
             self.show_failure_dialog3()
@@ -2498,12 +2663,7 @@ class Karimganj_College(MDApp):
         self.failure_dialog3.dismiss()
 
     def update_timer3(self, dt):
-        self.timer -= 1
-        if self.timer == 0:
-            Clock.unschedule(self.update_timer3)
-            self.show_otp_expired_dialog3()
-        else:
-            self.timer_label3.text = f"Time Left: {self.timer} seconds"
+        self._update_otp_countdown(self.timer_label3, self.show_otp_expired_dialog3)
 
     def show_otp_expired_dialog3(self):
         self.otp_expired_dialog3 = MDDialog(
@@ -2570,8 +2730,7 @@ class Karimganj_College(MDApp):
             pdf_data = file.read()
 
         try:
-            database = mysql.connector.connect(user="root", host="localhost",
-                                               password="Kushal@2003", database="karimganjcollege")
+            database = mysql.connector.connect(**DATABASE_CONFIG)
             cursor = database.cursor()
 
             # Check if the resume already exists for the user
@@ -2672,27 +2831,40 @@ class Karimganj_College(MDApp):
 
         #screen_manager.current = 'companyhome'
     def send_otpforforgetpassword(self, *args):
+        self._clear_password_reset_state()
         try:
             det = screen_manager.get_screen('forgetpassword')
-            recipient = det.ids.email_id.text
+            recipient = det.ids.email_id.text.strip()
+            account_type = self._find_password_reset_account(recipient)
+            if account_type is None:
+                self.show_snackbar("No account found for that email address")
+                return
 
-            self.email = "test123deb@gmail.com"  # Predefined sender email
-            self.password = "vntyvnwxunxzsobx"  # Predefined sender password
+            self.password_reset_email = recipient
+            self.password_reset_account_type = account_type
+            self.password_reset_authorized = False
 
-            self.otp = str(random.randint(100000, 999999))
-            #print("OTP:", self.otp)
+            self.email = SMTP_EMAIL
+            self.password = SMTP_PASSWORD
 
-            self.send_email(
+            otp_code = self._create_otp_challenge()
+
+            email_sent = self.send_email(
                 self.email,
                 self.password,
                 recipient,
                 "OTP Verification",
-                f"Your OTP is: {self.otp}",
+                f"Your OTP is: {otp_code}",
             )
+            if not email_sent:
+                self._clear_password_reset_state()
+                self.show_snackbar("Unable to send OTP. Please try again.")
+                return
 
             self.show_otp_dialog7()
 
         except Exception as e:
+            self._clear_password_reset_state()
             print(e)
 
     def show_otp_dialog7(self):
@@ -2741,19 +2913,35 @@ class Karimganj_College(MDApp):
         self.otp_input7 = value
 
     def close_dialog7(self, *args):
+        self._clear_password_reset_state()
         self.dialog7.dismiss()
 
     def verify_otp7(self, *args):
-        if self.otp_text7.text == self.otp:
+        otp_status = self._verify_current_otp(self.otp_text7.text)
+        if otp_status == OTPStatus.SUCCESS:
+            if not self.password_reset_email or not self.password_reset_account_type:
+                self._clear_password_reset_state(clear_challenge=False)
+                self.dialog7.dismiss()
+                self.show_failure_dialog7("Password reset is no longer authorized.")
+                return
+
+            self.password_reset_authorized = True
             self.dialog7.dismiss()
             self.verification_status = "OTP Verified!"
             self.show_success_dialog7()
             if self.verification_status == "OTP Verified!":
                 screen_manager.current = "updatepassword"
 
-        else:
+        elif otp_status == OTPStatus.INVALID:
+            self.show_failure_dialog7("Invalid OTP. Please try again.")
+        elif otp_status == OTPStatus.EXPIRED:
+            self._clear_password_reset_state(clear_challenge=False)
             self.dialog7.dismiss()
-            self.show_failure_dialog7()
+            self.show_otp_expired_dialog7()
+        else:
+            self._clear_password_reset_state(clear_challenge=False)
+            self.dialog7.dismiss()
+            self.show_failure_dialog7("Too many invalid attempts. Request a new OTP.")
 
     def show_success_dialog7(self):
         self.success_dialog7 = MDDialog(
@@ -2766,10 +2954,10 @@ class Karimganj_College(MDApp):
     def close_success_dialog7(self, *args):
         self.success_dialog7.dismiss()
 
-    def show_failure_dialog7(self):
+    def show_failure_dialog7(self, message="Invalid OTP!"):
         self.failure_dialog7 = MDDialog(
             title="Failure",
-            text="Invalid OTP!",
+            text=message,
             buttons=[MDRectangleFlatButton(text="OK", on_release=self.close_failure_dialog7)],
         )
         self.failure_dialog7.open()
@@ -2778,12 +2966,10 @@ class Karimganj_College(MDApp):
         self.failure_dialog7.dismiss()
 
     def update_timer7(self, dt):
-        self.timer -= 1
-        if self.timer == 0:
-            Clock.unschedule(self.update_timer7)
-            self.show_otp_expired_dialog7()
-        else:
-            self.timer_label7.text = f"Time Left: {self.timer} seconds"
+        self._update_otp_countdown(
+            self.timer_label7,
+            self._handle_password_reset_expiry,
+        )
 
     def show_otp_expired_dialog7(self):
         self.otp_expired_dialog7 = MDDialog(
@@ -2799,19 +2985,60 @@ class Karimganj_College(MDApp):
         self.otp_expired_dialog7.open()
 
     def close_otp_expired_dialog7(self, *args):
+        self._clear_password_reset_state()
         self.otp_expired_dialog7.dismiss()
 
     def resend_otp_dialog7(self, *args):
-        self.dialog7.dismiss()
-
+        self.otp_expired_dialog7.dismiss()
         self.send_otpforforgetpassword()
 
     def on_stop7(self):
-        Clock.unschedule(self.update_timer7)
+        self._clear_password_reset_state()
 
     def updatepassword(self):
-        self.show_snackbar("Password Changed")
-        screen_manager.current =  "login"
+        if not (
+            self.password_reset_authorized
+            and self.password_reset_email
+            and self.password_reset_account_type
+        ):
+            self._clear_password_reset_state()
+            self.show_snackbar("Verify an OTP before changing the password")
+            return
+
+        password_screen = screen_manager.get_screen("updatepassword")
+        new_password = password_screen.ids.newpass.text
+        if not new_password.strip():
+            self.show_snackbar("Password cannot be empty")
+            return
+
+        update_query = LEGACY_PASSWORD_UPDATE_QUERIES.get(
+            self.password_reset_account_type
+        )
+        if update_query is None:
+            self._clear_password_reset_state()
+            self.show_snackbar("Password reset is no longer authorized")
+            return
+
+        try:
+            self.cursor.execute(
+                update_query,
+                (hash_password(new_password), self.password_reset_email),
+            )
+            if self.cursor.rowcount != 1:
+                self.database.rollback()
+                self._clear_password_reset_state()
+                self.show_snackbar("Unable to update password. Please try again.")
+                return
+
+            self.database.commit()
+            password_screen.ids.newpass.text = ""
+            self._clear_password_reset_state()
+            self.show_snackbar("Password Changed")
+            screen_manager.current = "login"
+        except Exception:
+            self.database.rollback()
+            self._clear_password_reset_state()
+            self.show_snackbar("Unable to update password. Please try again.")
 
     def change_screen1(self):
         screen_manager.current = "updateprofile"
@@ -2986,8 +3213,7 @@ class Karimganj_College(MDApp):
             pdf_data = file.read()
 
         try:
-            database = mysql.connector.connect(user="root", host="localhost",
-                                               password="Kushal@2003", database="karimganjcollege")
+            database = mysql.connector.connect(**DATABASE_CONFIG)
             cursor = database.cursor()
 
             # Check if the resume already exists for the user
@@ -3029,17 +3255,32 @@ class Karimganj_College(MDApp):
             dts_scr.ids.email_id.disabled = True
             dts_scr.ids.phone_no.text = str(row[3])
             dts_scr.ids.address.text = str(row[4])
-            dts_scr.ids.password.text = str(row[5])
+            dts_scr.ids.password.text = ""
         self.database.commit()
 
         #self.database.close()
 
     def updatecompanyprofile(self,comp_id,comp_name,email_id,phone_no,address,password):
         try:
-            self.cursor.execute(
-                "UPDATE company_details SET company_id = %s, company_name = %s, company_emailid = %s, phone_no = %s, address = %s, password = %s WHERE company_emailid = %s",
-                (comp_id,comp_name,email_id,phone_no,address,password, email_id)
-            )
+            if password.strip():
+                self.cursor.execute(
+                    "UPDATE company_details SET company_id = %s, company_name = %s, company_emailid = %s, phone_no = %s, address = %s, password = %s WHERE company_emailid = %s",
+                    (
+                        comp_id,
+                        comp_name,
+                        email_id,
+                        phone_no,
+                        address,
+                        hash_password(password),
+                        email_id,
+                    ),
+                )
+            else:
+                self.cursor.execute(
+                    "UPDATE company_details SET company_id = %s, company_name = %s, company_emailid = %s, phone_no = %s, address = %s WHERE company_emailid = %s",
+                    (comp_id, comp_name, email_id, phone_no, address, email_id),
+                )
+            self.database.commit()
             self.cursor.execute("select * from company_details where company_emailid = %s", (email_id,))
             row = self.cursor.fetchone()
             if row:
@@ -3049,7 +3290,7 @@ class Karimganj_College(MDApp):
                 dts_scr.ids.email_id.text = str(row[2])
                 dts_scr.ids.phone_no.text = str(row[3])
                 dts_scr.ids.address.text = str(row[4])
-                dts_scr.ids.password.text = str(row[5])
+                dts_scr.ids.password.text = ""
             self.show_snackbar("Updated Successfully")
         except Exception as e:
             self.database.rollback()
@@ -3177,12 +3418,7 @@ class Karimganj_College(MDApp):
         except Exception as e:
             print(f"Error in on_click_showstudent_resume_to_comp_again: {e}")
     def show_save_dialog1(self, btn, student_email):
-        connection = mysql.connector.connect(
-            host='localhost',
-            database='karimganjcollege',
-            user='root',
-            password='Kushal@2003'
-        )
+        connection = mysql.connector.connect(**DATABASE_CONFIG)
         cursor = connection.cursor()
 
         try:
@@ -3215,12 +3451,7 @@ class Karimganj_College(MDApp):
     def download_pdf1(self,chosen_directory):
         a = screen_manager.get_screen("reviewstudentsjobapplication")
         stuemail = a.ids.studentemailidviewtocompany.text
-        connection = mysql.connector.connect(
-            host='localhost',
-            database='karimganjcollege',
-            user='root',
-            password='Kushal@2003'
-        )
+        connection = mysql.connector.connect(**DATABASE_CONFIG)
         cursor = connection.cursor()
 
         try:
